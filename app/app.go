@@ -1,3 +1,8 @@
+// ignite scaffold chain overgive-chain => build project
+// ignite scaffold module donation => build module
+// ignite generate proto-go => generate proto
+// ignite chain build => compile to executable binary
+
 package app
 
 import (
@@ -46,6 +51,7 @@ import (
 	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
 
 	"overgive-chain/docs"
+	donationmodulekeeper "overgive-chain/x/donation/keeper"
 	overgivechainmodulekeeper "overgive-chain/x/overgivechain/keeper"
 )
 
@@ -101,6 +107,7 @@ type App struct {
 	// simulation manager
 	sm                  *module.SimulationManager
 	OvergivechainKeeper overgivechainmodulekeeper.Keeper
+	DonationKeeper      donationmodulekeeper.Keeper
 }
 
 func init() {
@@ -181,6 +188,7 @@ func New(
 		&app.CircuitBreakerKeeper,
 		&app.ParamsKeeper,
 		&app.OvergivechainKeeper,
+		&app.DonationKeeper,
 	); err != nil {
 		panic(err)
 	}

@@ -1,6 +1,8 @@
 package app
 
 import (
+	_ "overgive-chain/x/donation/module"
+	donationmoduletypes "overgive-chain/x/donation/types"
 	_ "overgive-chain/x/overgivechain/module"
 	overgivechainmoduletypes "overgive-chain/x/overgivechain/types"
 	"time"
@@ -126,6 +128,7 @@ var (
 						ibcexported.ModuleName,
 						// chain modules
 						overgivechainmoduletypes.ModuleName,
+						donationmoduletypes.ModuleName,
 						// this line is used by starport scaffolding # stargate/app/beginBlockers
 					},
 					EndBlockers: []string{
@@ -135,6 +138,7 @@ var (
 						group.ModuleName,
 						// chain modules
 						overgivechainmoduletypes.ModuleName,
+						donationmoduletypes.ModuleName,
 						// this line is used by starport scaffolding # stargate/app/endBlockers
 					},
 					// The following is mostly only needed when ModuleName != StoreKey name.
@@ -172,6 +176,7 @@ var (
 						icatypes.ModuleName,
 						// chain modules
 						overgivechainmoduletypes.ModuleName,
+						donationmoduletypes.ModuleName,
 						// this line is used by starport scaffolding # stargate/app/initGenesis
 					},
 				}),
@@ -271,6 +276,10 @@ var (
 			{
 				Name:   overgivechainmoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&overgivechainmoduletypes.Module{}),
+			},
+			{
+				Name:   donationmoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&donationmoduletypes.Module{}),
 			},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},

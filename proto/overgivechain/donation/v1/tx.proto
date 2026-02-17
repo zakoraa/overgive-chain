@@ -1,0 +1,68 @@
+syntax = "proto3";
+package overgivechain.donation.v1;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "overgivechain/donation/v1/params.proto";
+import "cosmos/base/v1beta1/coin.proto";
+
+option go_package = "overgive-chain/x/donation/types";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+
+  // Tx for donate
+  rpc Donate(MsgDonate) returns (MsgDonationResponse);
+}
+
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "overgivechain/x/donation/MsgUpdateParams";
+
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // params defines the module parameters to update.
+  //
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+
+// MsgDonate used to create new donation record
+message MsgDonate {
+  // Cosmos SDK msg signer annotation
+  option (cosmos.msg.v1.signer) = "creator";
+
+  // Address Bech32 transaction sender
+  string creator = 1;
+
+  // Campaign ID target
+  string campaign_id = 2;
+
+  // amount of token for donation (must be uovg in the v1)
+  cosmos.base.v1beta1.Coin amount = 3;
+
+  // Message from donor
+  string memmo = 4;
+}
+
+message MsgDonationResponse {
+  // New created Donation ID 
+  uint64 donation_id = 1;
+}
