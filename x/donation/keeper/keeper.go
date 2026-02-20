@@ -9,8 +9,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 
 	"overgive-chain/x/donation/types"
-
-	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 )
 
 type Keeper struct {
@@ -25,7 +23,7 @@ type Keeper struct {
 	Params collections.Item[types.Params]
 
 	// BankKeeper for token transfer
-	bankKeeper bankkeeper.Keeper
+	bankKeeper types.BankKeeper
 
 	// Primary storage: Map[uint64] Donation
 	Donations collections.Map[uint64, types.Donation]
@@ -42,8 +40,7 @@ func NewKeeper(
 	cdc codec.Codec,
 	addressCodec address.Codec,
 	authority []byte,
-	bankKeeper bankkeeper.Keeper,
-
+	bankKeeper types.BankKeeper,
 ) Keeper {
 	if _, err := addressCodec.BytesToString(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address %s: %s", authority, err))
