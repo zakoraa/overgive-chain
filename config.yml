@@ -1,6 +1,7 @@
 version: 1
 validation: sovereign
 default_denom: stake
+chain-id: overgive-chain-local
 accounts: 
 - name: alice
   coins:

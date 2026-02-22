@@ -32,7 +32,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "RecordDonation",
 					Use:            "record-donation [campaign-id] [amount] [currency] [xendit-reference-id] [donation-hash] [metadata-hash]",
 					Short:          "Send a record-donation tx",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "campaign_id"}, {ProtoField: "amount"}, {ProtoField: "currency"}, {ProtoField: "xendit_reference_id"}, {ProtoField: "donation_hash"}, {ProtoField: "metadata_hash"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "campaign_id"}, {ProtoField: "amount"}, {ProtoField: "currency"}, {ProtoField: "payment_reference_id"}, {ProtoField: "donation_hash"}, {ProtoField: "metadata_hash"}},
 				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},

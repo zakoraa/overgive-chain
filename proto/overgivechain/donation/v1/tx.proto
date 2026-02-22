@@ -50,10 +50,12 @@ message MsgRecordDonation {
   string campaign_id = 2;
   string amount = 3;
   string currency = 4;
-  string xendit_reference_id = 5;
+  string payment_reference_id = 5;
   string donation_hash = 6;
   string metadata_hash = 7;
 }
 
 // MsgRecordDonationResponse defines the MsgRecordDonationResponse message.
-message MsgRecordDonationResponse {}
+message MsgRecordDonationResponse {
+  uint64 id = 1;
+}

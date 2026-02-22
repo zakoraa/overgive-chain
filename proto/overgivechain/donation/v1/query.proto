@@ -6,25 +6,44 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "overgivechain/donation/v1/params.proto";
+import "overgivechain/donation/v1/donation.proto";
+
 
 option go_package = "overgive-chain/x/donation/types";
 
 // Query defines the gRPC querier service.
 service Query {
-  // Parameters queries the parameters of the module.
-  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
-    option (google.api.http).get = "/overgive-chain/donation/v1/params";
+  // Get Donation By ID
+   rpc Donation(QueryGetDonationRequest)
+      returns (QueryGetDonationResponse) {
+    option (google.api.http).get =
+      "/overgive/donation/{id}";
+  }
+
+  // Get Donation By ID
+  rpc DonationByHash(QueryDonationByHashRequest)
+      returns (QueryDonationByHashResponse) {
+    option (google.api.http).get =
+      "/overgive/donation/hash/{donation_hash}";
   }
 }
 
-// QueryParamsRequest is request type for the Query/Params RPC method.
-message QueryParamsRequest {}
+// Request for Get Donation By ID
+message QueryGetDonationRequest {
+  uint64 id = 1;
+}
 
-// QueryParamsResponse is response type for the Query/Params RPC method.
-message QueryParamsResponse {
-  // params holds all the parameters of this module.
-  Params params = 1 [
-    (gogoproto.nullable) = false,
-    (amino.dont_omitempty) = true
-  ];
+// Response for Get Donation By ID
+message QueryGetDonationResponse {
+  Donation donation = 1;
+}
+
+// Request for Get Donation By Hash
+message QueryDonationByHashRequest {
+  string donation_hash = 1;
+}
+
+// Response for Get Donation By Hash
+message QueryDonationByHashResponse {
+  Donation donation = 1;
 }

@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package overgivechain.donation.v1;
+
+option go_package = "overgive-chain/x/donation/types";
+
+import "gogoproto/gogo.proto";
+
+message Donation {
+    uint64 id = 1;
+
+    string campaign_id = 2;
+
+    string amount = 3; // (decimal format in string) 
+
+    string currency = 4; // (e.g: IDR)
+
+    string payment_reference_id = 5;
+
+    string donation_hash = 6;
+
+    string metadata_hash = 7;
+
+    string creator = 8;
+
+    int64 recorded_at = 9;
+}

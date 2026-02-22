@@ -20,8 +20,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/server"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
-	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
+	// distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
+	// minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/spf13/cast"
@@ -157,10 +157,10 @@ func initAppForTestnet(app *app.App, args valArgs) *app.App {
 	//
 
 	// Initialize records for this validator across all distribution stores
-	handleErr(app.DistrKeeper.SetValidatorHistoricalRewards(ctx, validator, 0, distrtypes.NewValidatorHistoricalRewards(sdk.DecCoins{}, 1)))
-	handleErr(app.DistrKeeper.SetValidatorCurrentRewards(ctx, validator, distrtypes.NewValidatorCurrentRewards(sdk.DecCoins{}, 1)))
-	handleErr(app.DistrKeeper.SetValidatorAccumulatedCommission(ctx, validator, distrtypes.InitialValidatorAccumulatedCommission()))
-	handleErr(app.DistrKeeper.SetValidatorOutstandingRewards(ctx, validator, distrtypes.ValidatorOutstandingRewards{Rewards: sdk.DecCoins{}}))
+	// handleErr(app.DistrKeeper.SetValidatorHistoricalRewards(ctx, validator, 0, distrtypes.NewValidatorHistoricalRewards(sdk.DecCoins{}, 1)))
+	// handleErr(app.DistrKeeper.SetValidatorCurrentRewards(ctx, validator, distrtypes.NewValidatorCurrentRewards(sdk.DecCoins{}, 1)))
+	// handleErr(app.DistrKeeper.SetValidatorAccumulatedCommission(ctx, validator, distrtypes.InitialValidatorAccumulatedCommission()))
+	// handleErr(app.DistrKeeper.SetValidatorOutstandingRewards(ctx, validator, distrtypes.ValidatorOutstandingRewards{Rewards: sdk.DecCoins{}}))
 
 	// SLASHING
 	//
@@ -176,20 +176,20 @@ func initAppForTestnet(app *app.App, args valArgs) *app.App {
 
 	// BANK
 	//
-	bondDenom, err := app.StakingKeeper.BondDenom(ctx)
-	handleErr(err)
+	// bondDenom, err := app.StakingKeeper.BondDenom(ctx)
+	// handleErr(err)
 
-	defaultCoins := sdk.NewCoins(sdk.NewInt64Coin(bondDenom, 1000000000))
+	// defaultCoins := sdk.NewCoins(sdk.NewInt64Coin(bondDenom, 1000000000))
 
-	// Fund local accounts
-	for _, accountStr := range args.accountsToFund {
-		handleErr(app.BankKeeper.MintCoins(ctx, minttypes.ModuleName, defaultCoins))
+	// // Fund local accounts
+	// for _, accountStr := range args.accountsToFund {
+	// 	// handleErr(app.BankKeeper.MintCoins(ctx, minttypes.ModuleName, defaultCoins))
 
-		account, err := app.AuthKeeper.AddressCodec().StringToBytes(accountStr)
-		handleErr(err)
+	// 	account, err := app.AuthKeeper.AddressCodec().StringToBytes(accountStr)
+	// 	handleErr(err)
 
-		handleErr(app.BankKeeper.SendCoinsFromModuleToAccount(ctx, minttypes.ModuleName, account, defaultCoins))
-	}
+	// 	handleErr(app.BankKeeper.SendCoinsFromModuleToAccount(ctx, minttypes.ModuleName, account, defaultCoins))
+	// }
 
 	return app
 }

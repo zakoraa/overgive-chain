@@ -21,6 +21,12 @@ type Keeper struct {
 
 	Schema collections.Schema
 	Params collections.Item[types.Params]
+
+	// donation indexed key-value store
+	Donations collections.Map[uint64, types.Donation]
+
+	// auto increment counter
+	DonationSeq collections.Sequence
 }
 
 func NewKeeper(

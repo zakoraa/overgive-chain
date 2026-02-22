@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package overgivechain.delivery.v1;
+
+option go_package = "overgive-chain/x/delivery/types";
+
+message Delivery {
+  uint64 id = 1;
+
+  string campaign_id = 2;
+
+  string title = 3;
+
+  string note_hash = 4;
+
+  string delivery_hash = 5;
+
+  string creator = 6;
+
+  int64 recorded_at = 7;
+}

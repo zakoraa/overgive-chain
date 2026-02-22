@@ -54,4 +54,6 @@ message MsgRecordDelivery {
 }
 
 // MsgRecordDeliveryResponse defines the MsgRecordDeliveryResponse message.
-message MsgRecordDeliveryResponse {}
+message MsgRecordDeliveryResponse {
+  uint64 id = 1;
+}
