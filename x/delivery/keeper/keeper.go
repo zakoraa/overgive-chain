@@ -8,14 +8,9 @@ import (
 	corestore "cosmossdk.io/core/store"
 	"github.com/cosmos/cosmos-sdk/codec"
 
-	"overgive-chain/x/delivery/types"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	deliverytypes "overgive-chain/x/delivery/types"
+	permissionstypes "overgive-chain/x/permissions/types"
 )
-
-type PermissionsKeeper interface {
-	IsAllowedWriter(ctx sdk.Context, addr string) (bool, error)
-}
 
 type Keeper struct {
 	storeService corestore.KVStoreService
@@ -26,11 +21,11 @@ type Keeper struct {
 	authority []byte
 
 	Schema collections.Schema
-	Params collections.Item[types.Params]
+	Params collections.Item[deliverytypes.Params]
 
-	permissionsKeeper PermissionsKeeper
+	permissionsKeeper permissionstypes.PermissionsKeeper
 
-	Deliveries       collections.Map[uint64, types.Delivery]
+	Deliveries       collections.Map[uint64, deliverytypes.Delivery]
 	DeliverySeq      collections.Sequence
 	DeliveriesByHash collections.Map[string, uint64]
 }
@@ -40,7 +35,7 @@ func NewKeeper(
 	cdc codec.Codec,
 	addressCodec address.Codec,
 	authority []byte,
-	permissionsKeeper PermissionsKeeper,
+	permissionsKeeper permissionstypes.PermissionsKeeper,
 
 ) Keeper {
 	if _, err := addressCodec.BytesToString(authority); err != nil {
@@ -55,25 +50,25 @@ func NewKeeper(
 		addressCodec: addressCodec,
 		authority:    authority,
 
-		Params: collections.NewItem(sb, types.ParamsKey, "params", codec.CollValue[types.Params](cdc)),
+		Params: collections.NewItem(sb, deliverytypes.ParamsKey, "params", codec.CollValue[deliverytypes.Params](cdc)),
 
 		Deliveries: collections.NewMap(
 			sb,
-			types.DeliveryKeyPrefix,
+			deliverytypes.DeliveryKeyPrefix,
 			"deliveries",
 			collections.Uint64Key,
-			codec.CollValue[types.Delivery](cdc),
+			codec.CollValue[deliverytypes.Delivery](cdc),
 		),
 
 		DeliverySeq: collections.NewSequence(
 			sb,
-			types.DeliverySeqKey,
+			deliverytypes.DeliverySeqKey,
 			"delivery_seq",
 		),
 
 		DeliveriesByHash: collections.NewMap(
 			sb,
-			types.DeliveryHashKeyPrefix,
+			deliverytypes.DeliveryHashKeyPrefix,
 			"deliveries_by_hash",
 			collections.StringKey,
 			collections.Uint64Value,

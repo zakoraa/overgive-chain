@@ -8,14 +8,9 @@ import (
 	corestore "cosmossdk.io/core/store"
 	"github.com/cosmos/cosmos-sdk/codec"
 
-	"overgive-chain/x/donation/types"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	donationtypes "overgive-chain/x/donation/types"
+	permissionstypes "overgive-chain/x/permissions/types"
 )
-
-type PermissionsKeeper interface {
-	IsAllowedWriter(ctx sdk.Context, addr string) (bool, error)
-}
 
 type Keeper struct {
 	storeService corestore.KVStoreService
@@ -25,12 +20,12 @@ type Keeper struct {
 	// Typically, this should be the x/gov module account.
 	authority []byte
 
-	permissionsKeeper PermissionsKeeper
+	permissionsKeeper permissionstypes.PermissionsKeeper
 
 	Schema collections.Schema
-	Params collections.Item[types.Params]
+	Params collections.Item[donationtypes.Params]
 
-	Donations       collections.Map[uint64, types.Donation]
+	Donations       collections.Map[uint64, donationtypes.Donation]
 	DonationSeq     collections.Sequence
 	DonationsByHash collections.Map[string, uint64]
 }
@@ -40,7 +35,7 @@ func NewKeeper(
 	cdc codec.Codec,
 	addressCodec address.Codec,
 	authority []byte,
-	permissionsKeeper PermissionsKeeper,
+	permissionsKeeper permissionstypes.PermissionsKeeper,
 ) Keeper {
 	if _, err := addressCodec.BytesToString(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address %s: %s", authority, err))
@@ -54,25 +49,25 @@ func NewKeeper(
 		addressCodec: addressCodec,
 		authority:    authority,
 
-		Params: collections.NewItem(sb, types.ParamsKey, "params", codec.CollValue[types.Params](cdc)),
+		Params: collections.NewItem(sb, donationtypes.ParamsKey, "params", codec.CollValue[donationtypes.Params](cdc)),
 
 		Donations: collections.NewMap(
 			sb,
-			types.DonationKeyPrefix,
+			donationtypes.DonationKeyPrefix,
 			"donations",
 			collections.Uint64Key,
-			codec.CollValue[types.Donation](cdc),
+			codec.CollValue[donationtypes.Donation](cdc),
 		),
 
 		DonationSeq: collections.NewSequence(
 			sb,
-			types.DonationSeqKey,
+			donationtypes.DonationSeqKey,
 			"donation_seq",
 		),
 
 		DonationsByHash: collections.NewMap(
 			sb,
-			types.DonationHashKeyPrefix,
+			donationtypes.DonationHashKeyPrefix,
 			"donations_by_hash",
 			collections.StringKey,
 			collections.Uint64Value,

@@ -25,3 +25,8 @@ type ParamSubspace interface {
 	Get(context.Context, []byte, interface{})
 	Set(context.Context, []byte, interface{})
 }
+
+// PermissionsKeeper defines the expected interface for permission.
+type PermissionsKeeper interface {
+    IsAllowedWriter(ctx sdk.Context, addr string) (bool, error)
+}
