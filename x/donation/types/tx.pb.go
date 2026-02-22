@@ -6,8 +6,11 @@ package types
 import (
 	context "context"
 	fmt "fmt"
+	io "io"
+	math "math"
+	math_bits "math/bits"
+
 	_ "github.com/cosmos/cosmos-proto"
-	types "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/cosmos/cosmos-sdk/types/msgservice"
 	_ "github.com/cosmos/cosmos-sdk/types/tx/amino"
 	_ "github.com/cosmos/gogoproto/gogoproto"
@@ -16,9 +19,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	io "io"
-	math "math"
-	math_bits "math/bits"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -36,8 +36,6 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 type MsgUpdateParams struct {
 	// authority is the address that controls the module (defaults to x/gov unless overwritten).
 	Authority string `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
-	// params defines the module parameters to update.
-	//
 	// NOTE: All parameters must be supplied.
 	Params Params `protobuf:"bytes,2,opt,name=params,proto3" json:"params"`
 }
@@ -127,30 +125,30 @@ func (m *MsgUpdateParamsResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgUpdateParamsResponse proto.InternalMessageInfo
 
-// MsgDonate used to create new donation record
-type MsgDonate struct {
-	// Address Bech32 transaction sender
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	// Campaign ID target
-	CampaignId string `protobuf:"bytes,2,opt,name=campaign_id,json=campaignId,proto3" json:"campaign_id,omitempty"`
-	// amount of token for donation (must be uovg in the v1)
-	Amount *types.Coin `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
-	// Message from donor
-	Memo string `protobuf:"bytes,4,opt,name=memo,proto3" json:"memo,omitempty"`
+// MsgCreateDonation defines the MsgCreateDonation message.
+type MsgCreateDonation struct {
+	Creator      string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Id           string `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	CampaignId   string `protobuf:"bytes,3,opt,name=campaign_id,json=campaignId,proto3" json:"campaign_id,omitempty"`
+	Amount       string `protobuf:"bytes,4,opt,name=amount,proto3" json:"amount,omitempty"`
+	Currency     string `protobuf:"bytes,5,opt,name=currency,proto3" json:"currency,omitempty"`
+	PaymentRefId string `protobuf:"bytes,6,opt,name=payment_ref_id,json=paymentRefId,proto3" json:"payment_ref_id,omitempty"`
+	DonationHash string `protobuf:"bytes,7,opt,name=donation_hash,json=donationHash,proto3" json:"donation_hash,omitempty"`
+	CreatedAt    int64  `protobuf:"varint,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 }
 
-func (m *MsgDonate) Reset()         { *m = MsgDonate{} }
-func (m *MsgDonate) String() string { return proto.CompactTextString(m) }
-func (*MsgDonate) ProtoMessage()    {}
-func (*MsgDonate) Descriptor() ([]byte, []int) {
+func (m *MsgCreateDonation) Reset()         { *m = MsgCreateDonation{} }
+func (m *MsgCreateDonation) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateDonation) ProtoMessage()    {}
+func (*MsgCreateDonation) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd9161c5dbdbf758, []int{2}
 }
-func (m *MsgDonate) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateDonation) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgDonate) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateDonation) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgDonate.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateDonation.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -160,63 +158,90 @@ func (m *MsgDonate) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *MsgDonate) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgDonate.Merge(m, src)
+func (m *MsgCreateDonation) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateDonation.Merge(m, src)
 }
-func (m *MsgDonate) XXX_Size() int {
+func (m *MsgCreateDonation) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgDonate) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgDonate.DiscardUnknown(m)
+func (m *MsgCreateDonation) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateDonation.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgDonate proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateDonation proto.InternalMessageInfo
 
-func (m *MsgDonate) GetCreator() string {
+func (m *MsgCreateDonation) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgDonate) GetCampaignId() string {
+func (m *MsgCreateDonation) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *MsgCreateDonation) GetCampaignId() string {
 	if m != nil {
 		return m.CampaignId
 	}
 	return ""
 }
 
-func (m *MsgDonate) GetAmount() *types.Coin {
+func (m *MsgCreateDonation) GetAmount() string {
 	if m != nil {
 		return m.Amount
-	}
-	return nil
-}
-
-func (m *MsgDonate) GetMemo() string {
-	if m != nil {
-		return m.Memo
 	}
 	return ""
 }
 
-type MsgDonationResponse struct {
-	// New created Donation ID
-	DonationId uint64 `protobuf:"varint,1,opt,name=donation_id,json=donationId,proto3" json:"donation_id,omitempty"`
+func (m *MsgCreateDonation) GetCurrency() string {
+	if m != nil {
+		return m.Currency
+	}
+	return ""
 }
 
-func (m *MsgDonationResponse) Reset()         { *m = MsgDonationResponse{} }
-func (m *MsgDonationResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgDonationResponse) ProtoMessage()    {}
-func (*MsgDonationResponse) Descriptor() ([]byte, []int) {
+func (m *MsgCreateDonation) GetPaymentRefId() string {
+	if m != nil {
+		return m.PaymentRefId
+	}
+	return ""
+}
+
+func (m *MsgCreateDonation) GetDonationHash() string {
+	if m != nil {
+		return m.DonationHash
+	}
+	return ""
+}
+
+func (m *MsgCreateDonation) GetCreatedAt() int64 {
+	if m != nil {
+		return m.CreatedAt
+	}
+	return 0
+}
+
+// MsgCreateDonationResponse defines the MsgCreateDonationResponse message.
+type MsgCreateDonationResponse struct {
+}
+
+func (m *MsgCreateDonationResponse) Reset()         { *m = MsgCreateDonationResponse{} }
+func (m *MsgCreateDonationResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateDonationResponse) ProtoMessage()    {}
+func (*MsgCreateDonationResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd9161c5dbdbf758, []int{3}
 }
-func (m *MsgDonationResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateDonationResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgDonationResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateDonationResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgDonationResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateDonationResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -226,30 +251,23 @@ func (m *MsgDonationResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return b[:n], nil
 	}
 }
-func (m *MsgDonationResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgDonationResponse.Merge(m, src)
+func (m *MsgCreateDonationResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateDonationResponse.Merge(m, src)
 }
-func (m *MsgDonationResponse) XXX_Size() int {
+func (m *MsgCreateDonationResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgDonationResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgDonationResponse.DiscardUnknown(m)
+func (m *MsgCreateDonationResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateDonationResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgDonationResponse proto.InternalMessageInfo
-
-func (m *MsgDonationResponse) GetDonationId() uint64 {
-	if m != nil {
-		return m.DonationId
-	}
-	return 0
-}
+var xxx_messageInfo_MsgCreateDonationResponse proto.InternalMessageInfo
 
 func init() {
 	proto.RegisterType((*MsgUpdateParams)(nil), "overgivechain.donation.v1.MsgUpdateParams")
 	proto.RegisterType((*MsgUpdateParamsResponse)(nil), "overgivechain.donation.v1.MsgUpdateParamsResponse")
-	proto.RegisterType((*MsgDonate)(nil), "overgivechain.donation.v1.MsgDonate")
-	proto.RegisterType((*MsgDonationResponse)(nil), "overgivechain.donation.v1.MsgDonationResponse")
+	proto.RegisterType((*MsgCreateDonation)(nil), "overgivechain.donation.v1.MsgCreateDonation")
+	proto.RegisterType((*MsgCreateDonationResponse)(nil), "overgivechain.donation.v1.MsgCreateDonationResponse")
 }
 
 func init() {
@@ -257,39 +275,41 @@ func init() {
 }
 
 var fileDescriptor_dd9161c5dbdbf758 = []byte{
-	// 499 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x52, 0x31, 0x6f, 0xd3, 0x40,
-	0x14, 0xce, 0xd1, 0x10, 0xe4, 0x6b, 0x25, 0x84, 0xa9, 0x54, 0xc7, 0x83, 0x53, 0x2c, 0x84, 0xa2,
-	0x48, 0xb5, 0xe5, 0x20, 0x55, 0xa2, 0x4c, 0x84, 0x2e, 0x1d, 0x22, 0x21, 0x23, 0x16, 0x06, 0xaa,
-	0x8b, 0x7d, 0xba, 0xde, 0xe0, 0x7b, 0x96, 0xef, 0x6a, 0xb5, 0x1b, 0x62, 0x64, 0x62, 0xe7, 0x0f,
-	0x30, 0x66, 0xe0, 0x47, 0x74, 0x60, 0xa8, 0x98, 0x18, 0x10, 0x42, 0xc9, 0x90, 0xbf, 0x81, 0x6c,
-	0xdf, 0x11, 0x12, 0xd4, 0x2a, 0x8b, 0x75, 0xef, 0xbd, 0xef, 0xbd, 0xf7, 0x7d, 0x9f, 0x1f, 0xf6,
-	0xa1, 0xa4, 0x05, 0xe3, 0x25, 0x4d, 0xce, 0x08, 0x17, 0x61, 0x0a, 0x82, 0x28, 0x0e, 0x22, 0x2c,
-	0xa3, 0x50, 0x5d, 0x04, 0x79, 0x01, 0x0a, 0xec, 0xee, 0x0a, 0x26, 0x30, 0x98, 0xa0, 0x8c, 0xdc,
-	0x07, 0x24, 0xe3, 0x02, 0xc2, 0xfa, 0xdb, 0xa0, 0xdd, 0xbd, 0x04, 0x64, 0x06, 0x32, 0xcc, 0x24,
-	0xab, 0xa6, 0x64, 0x92, 0xe9, 0x42, 0xb7, 0x29, 0x9c, 0xd6, 0x51, 0xd8, 0x04, 0xba, 0xb4, 0xcb,
-	0x80, 0x41, 0x93, 0xaf, 0x5e, 0x3a, 0xfb, 0xe4, 0x66, 0x6e, 0x39, 0x29, 0x48, 0x66, 0xba, 0x3d,
-	0xbd, 0x71, 0x42, 0x24, 0x0d, 0xcb, 0x68, 0x42, 0x15, 0x89, 0xc2, 0x04, 0xb8, 0x68, 0xea, 0xfe,
-	0x37, 0x84, 0xef, 0x8f, 0x25, 0x7b, 0x93, 0xa7, 0x44, 0xd1, 0x57, 0x75, 0xa7, 0x7d, 0x88, 0x2d,
-	0x72, 0xae, 0xce, 0xa0, 0xe0, 0xea, 0xd2, 0x41, 0xfb, 0xa8, 0x6f, 0x8d, 0x9c, 0xef, 0x5f, 0x0f,
-	0x76, 0x35, 0xad, 0x17, 0x69, 0x5a, 0x50, 0x29, 0x5f, 0xab, 0x82, 0x0b, 0x16, 0x2f, 0xa1, 0xf6,
-	0x31, 0xee, 0x34, 0xbb, 0x9d, 0x3b, 0xfb, 0xa8, 0xbf, 0x3d, 0x7c, 0x14, 0xdc, 0x68, 0x4e, 0xd0,
-	0xac, 0x1a, 0x59, 0x57, 0xbf, 0x7a, 0xad, 0x2f, 0x8b, 0xe9, 0x00, 0xc5, 0xba, 0xf7, 0xe8, 0xf9,
-	0x87, 0xc5, 0x74, 0xb0, 0x9c, 0xfa, 0x71, 0x31, 0x1d, 0xf4, 0x57, 0xc5, 0x5e, 0x2c, 0xe5, 0xae,
-	0x51, 0xf7, 0xbb, 0x78, 0x6f, 0x2d, 0x15, 0x53, 0x99, 0x83, 0x90, 0xd4, 0xff, 0x8c, 0xb0, 0x35,
-	0x96, 0xec, 0xb8, 0x6a, 0xa5, 0xb6, 0x83, 0xef, 0x25, 0x05, 0x25, 0x0a, 0x8a, 0x46, 0x61, 0x6c,
-	0x42, 0xbb, 0x87, 0xb7, 0x13, 0x92, 0xe5, 0x84, 0x33, 0x71, 0xca, 0xd3, 0x5a, 0x8a, 0x15, 0x63,
-	0x93, 0x3a, 0x49, 0xed, 0x08, 0x77, 0x48, 0x06, 0xe7, 0x42, 0x39, 0x5b, 0xb5, 0xcc, 0x6e, 0xa0,
-	0x8d, 0xa9, 0x3c, 0x0e, 0xb4, 0xc7, 0xc1, 0x4b, 0xe0, 0x22, 0xd6, 0x40, 0xdb, 0xc6, 0xed, 0x8c,
-	0x66, 0xe0, 0xb4, 0xeb, 0x61, 0xf5, 0xfb, 0x68, 0xa7, 0xd2, 0x69, 0xb6, 0xfa, 0x87, 0xf8, 0xa1,
-	0x21, 0xc7, 0x41, 0x18, 0xd2, 0x15, 0x19, 0xa3, 0xb5, 0x22, 0x53, 0x51, 0x6d, 0xc7, 0xd8, 0xa4,
-	0x4e, 0xd2, 0xe1, 0x4f, 0x84, 0xb7, 0xc6, 0x92, 0xd9, 0x02, 0xef, 0xac, 0xfc, 0xc3, 0xc1, 0x2d,
-	0xde, 0xaf, 0x39, 0xe4, 0x0e, 0x37, 0xc7, 0xfe, 0x25, 0xf6, 0x0e, 0x77, 0xb4, 0x93, 0x8f, 0x6f,
-	0xef, 0x6e, 0x50, 0x6e, 0xb0, 0x01, 0xea, 0x1f, 0xe1, 0xee, 0xdd, 0xf7, 0xd5, 0x51, 0x8c, 0x9e,
-	0x5d, 0xcd, 0x3c, 0x74, 0x3d, 0xf3, 0xd0, 0xef, 0x99, 0x87, 0x3e, 0xcd, 0xbd, 0xd6, 0xf5, 0xdc,
-	0x6b, 0xfd, 0x98, 0x7b, 0xad, 0xb7, 0x3d, 0x33, 0xef, 0xe0, 0xbf, 0xa3, 0x50, 0x97, 0x39, 0x95,
-	0x93, 0x4e, 0x7d, 0xe0, 0x4f, 0xff, 0x04, 0x00, 0x00, 0xff, 0xff, 0xea, 0x37, 0x0f, 0x0e, 0xc6,
-	0x03, 0x00, 0x00,
+	// 535 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x53, 0xb1, 0x6f, 0xd3, 0x4e,
+	0x14, 0x8e, 0x93, 0x5f, 0xd3, 0xe6, 0x35, 0xbf, 0xa0, 0x9e, 0x2a, 0xea, 0x18, 0xe1, 0x84, 0x80,
+	0x50, 0x14, 0xd1, 0x58, 0x0d, 0x08, 0x89, 0x32, 0x35, 0x74, 0xa0, 0x43, 0x24, 0x64, 0xc4, 0xc2,
+	0x12, 0x1d, 0xf6, 0xd5, 0xf6, 0xe0, 0x3b, 0xeb, 0xee, 0x12, 0x35, 0x1b, 0x62, 0x64, 0xe2, 0x8f,
+	0x60, 0x60, 0xcc, 0xc0, 0x1f, 0xd1, 0x81, 0xa1, 0x62, 0x62, 0x42, 0x28, 0x19, 0xb2, 0xf3, 0x17,
+	0x20, 0xdb, 0x77, 0x44, 0x49, 0xd5, 0x02, 0x4b, 0x94, 0xf7, 0x7d, 0xdf, 0x7d, 0xef, 0xbe, 0x77,
+	0xcf, 0xd0, 0x62, 0x63, 0xc2, 0x83, 0x68, 0x4c, 0xbc, 0x10, 0x47, 0xd4, 0xf1, 0x19, 0xc5, 0x32,
+	0x62, 0xd4, 0x19, 0x1f, 0x38, 0xf2, 0xac, 0x9b, 0x70, 0x26, 0x19, 0xaa, 0xaf, 0x68, 0xba, 0x5a,
+	0xd3, 0x1d, 0x1f, 0x58, 0x3b, 0x38, 0x8e, 0x28, 0x73, 0xb2, 0xdf, 0x5c, 0x6d, 0xed, 0x79, 0x4c,
+	0xc4, 0x4c, 0x38, 0xb1, 0x08, 0x52, 0x97, 0x58, 0x04, 0x8a, 0xa8, 0xe7, 0xc4, 0x30, 0xab, 0x9c,
+	0xbc, 0x50, 0xd4, 0x6e, 0xc0, 0x02, 0x96, 0xe3, 0xe9, 0x3f, 0x85, 0xde, 0xbf, 0xfa, 0x6e, 0x09,
+	0xe6, 0x38, 0x56, 0xa7, 0x5b, 0x5f, 0x0c, 0xb8, 0x31, 0x10, 0xc1, 0xab, 0xc4, 0xc7, 0x92, 0xbc,
+	0xc8, 0x18, 0xf4, 0x18, 0x2a, 0x78, 0x24, 0x43, 0xc6, 0x23, 0x39, 0x31, 0x8d, 0xa6, 0xd1, 0xae,
+	0xf4, 0xcd, 0xaf, 0x9f, 0xf7, 0x77, 0x55, 0xdb, 0x23, 0xdf, 0xe7, 0x44, 0x88, 0x97, 0x92, 0x47,
+	0x34, 0x70, 0x97, 0x52, 0x74, 0x0c, 0xe5, 0xdc, 0xdb, 0x2c, 0x36, 0x8d, 0xf6, 0x76, 0xef, 0x4e,
+	0xf7, 0xca, 0xf0, 0xdd, 0xbc, 0x55, 0xbf, 0x72, 0xfe, 0xbd, 0x51, 0xf8, 0xb4, 0x98, 0x76, 0x0c,
+	0x57, 0x9d, 0x3d, 0x7c, 0xfa, 0x6e, 0x31, 0xed, 0x2c, 0x5d, 0xdf, 0x2f, 0xa6, 0x9d, 0xf6, 0x6a,
+	0x98, 0xb3, 0x65, 0x9c, 0xb5, 0xab, 0xb7, 0xea, 0xb0, 0xb7, 0x06, 0xb9, 0x44, 0x24, 0x8c, 0x0a,
+	0xd2, 0xfa, 0x58, 0x84, 0x9d, 0x81, 0x08, 0x9e, 0x71, 0x82, 0x25, 0x39, 0x56, 0x06, 0xa8, 0x07,
+	0x9b, 0x5e, 0x8a, 0x30, 0xfe, 0xc7, 0xa4, 0x5a, 0x88, 0x6a, 0x50, 0x8c, 0xfc, 0x2c, 0x63, 0xc5,
+	0x2d, 0x46, 0x3e, 0x6a, 0xc0, 0xb6, 0x87, 0xe3, 0x04, 0x47, 0x01, 0x1d, 0x46, 0xbe, 0x59, 0xca,
+	0x08, 0xd0, 0xd0, 0x89, 0x8f, 0x6e, 0x42, 0x19, 0xc7, 0x6c, 0x44, 0xa5, 0xf9, 0x5f, 0xc6, 0xa9,
+	0x0a, 0x59, 0xb0, 0xe5, 0x8d, 0x38, 0x27, 0xd4, 0x9b, 0x98, 0x1b, 0x19, 0xf3, 0xbb, 0x46, 0xf7,
+	0xa0, 0x96, 0xe0, 0x49, 0x4c, 0xa8, 0x1c, 0x72, 0x72, 0x9a, 0xfa, 0x96, 0x33, 0x45, 0x55, 0xa1,
+	0x2e, 0x39, 0x3d, 0xf1, 0xd1, 0x5d, 0xf8, 0x5f, 0xcf, 0x62, 0x18, 0x62, 0x11, 0x9a, 0x9b, 0xb9,
+	0x48, 0x83, 0xcf, 0xb1, 0x08, 0xd1, 0x6d, 0x80, 0xec, 0xea, 0xc4, 0x1f, 0x62, 0x69, 0x6e, 0x35,
+	0x8d, 0x76, 0xc9, 0xad, 0x28, 0xe4, 0x48, 0x1e, 0x56, 0xd3, 0x81, 0xeb, 0x70, 0xad, 0x5b, 0x50,
+	0xbf, 0x34, 0x25, 0x3d, 0xc3, 0xde, 0x4f, 0x03, 0x4a, 0x03, 0x11, 0x20, 0x0a, 0xd5, 0x95, 0x8d,
+	0xe9, 0x5c, 0xf3, 0xd2, 0x6b, 0xef, 0x61, 0xf5, 0xfe, 0x5e, 0xab, 0xfb, 0x22, 0x09, 0xb5, 0xb5,
+	0x77, 0x7b, 0x70, 0xbd, 0xcb, 0xaa, 0xda, 0x7a, 0xf4, 0x2f, 0x6a, 0xdd, 0xd5, 0xda, 0x78, 0x9b,
+	0x2e, 0x66, 0xff, 0xc9, 0xf9, 0xcc, 0x36, 0x2e, 0x66, 0xb6, 0xf1, 0x63, 0x66, 0x1b, 0x1f, 0xe6,
+	0x76, 0xe1, 0x62, 0x6e, 0x17, 0xbe, 0xcd, 0xed, 0xc2, 0xeb, 0x86, 0x76, 0xdd, 0xbf, 0xb4, 0x98,
+	0x72, 0x92, 0x10, 0xf1, 0xa6, 0x9c, 0x7d, 0x64, 0x0f, 0x7f, 0x05, 0x00, 0x00, 0xff, 0xff, 0x99,
+	0xcc, 0x15, 0x2e, 0x2a, 0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -307,8 +327,8 @@ type MsgClient interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
-	// Tx for donate
-	Donate(ctx context.Context, in *MsgDonate, opts ...grpc.CallOption) (*MsgDonationResponse, error)
+	// CreateDonation defines the CreateDonation RPC.
+	CreateDonation(ctx context.Context, in *MsgCreateDonation, opts ...grpc.CallOption) (*MsgCreateDonationResponse, error)
 }
 
 type msgClient struct {
@@ -328,9 +348,9 @@ func (c *msgClient) UpdateParams(ctx context.Context, in *MsgUpdateParams, opts 
 	return out, nil
 }
 
-func (c *msgClient) Donate(ctx context.Context, in *MsgDonate, opts ...grpc.CallOption) (*MsgDonationResponse, error) {
-	out := new(MsgDonationResponse)
-	err := c.cc.Invoke(ctx, "/overgivechain.donation.v1.Msg/Donate", in, out, opts...)
+func (c *msgClient) CreateDonation(ctx context.Context, in *MsgCreateDonation, opts ...grpc.CallOption) (*MsgCreateDonationResponse, error) {
+	out := new(MsgCreateDonationResponse)
+	err := c.cc.Invoke(ctx, "/overgivechain.donation.v1.Msg/CreateDonation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -342,8 +362,8 @@ type MsgServer interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
-	// Tx for donate
-	Donate(context.Context, *MsgDonate) (*MsgDonationResponse, error)
+	// CreateDonation defines the CreateDonation RPC.
+	CreateDonation(context.Context, *MsgCreateDonation) (*MsgCreateDonationResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -353,8 +373,8 @@ type UnimplementedMsgServer struct {
 func (*UnimplementedMsgServer) UpdateParams(ctx context.Context, req *MsgUpdateParams) (*MsgUpdateParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateParams not implemented")
 }
-func (*UnimplementedMsgServer) Donate(ctx context.Context, req *MsgDonate) (*MsgDonationResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Donate not implemented")
+func (*UnimplementedMsgServer) CreateDonation(ctx context.Context, req *MsgCreateDonation) (*MsgCreateDonationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateDonation not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -379,20 +399,20 @@ func _Msg_UpdateParams_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_Donate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDonate)
+func _Msg_CreateDonation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateDonation)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).Donate(ctx, in)
+		return srv.(MsgServer).CreateDonation(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/overgivechain.donation.v1.Msg/Donate",
+		FullMethod: "/overgivechain.donation.v1.Msg/CreateDonation",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).Donate(ctx, req.(*MsgDonate))
+		return srv.(MsgServer).CreateDonation(ctx, req.(*MsgCreateDonation))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -407,8 +427,8 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_UpdateParams_Handler,
 		},
 		{
-			MethodName: "Donate",
-			Handler:    _Msg_Donate_Handler,
+			MethodName: "CreateDonation",
+			Handler:    _Msg_CreateDonation_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -478,7 +498,7 @@ func (m *MsgUpdateParamsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgDonate) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateDonation) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -488,39 +508,60 @@ func (m *MsgDonate) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgDonate) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateDonation) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgDonate) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateDonation) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Memo) > 0 {
-		i -= len(m.Memo)
-		copy(dAtA[i:], m.Memo)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Memo)))
+	if m.CreatedAt != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.CreatedAt))
+		i--
+		dAtA[i] = 0x40
+	}
+	if len(m.DonationHash) > 0 {
+		i -= len(m.DonationHash)
+		copy(dAtA[i:], m.DonationHash)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.DonationHash)))
+		i--
+		dAtA[i] = 0x3a
+	}
+	if len(m.PaymentRefId) > 0 {
+		i -= len(m.PaymentRefId)
+		copy(dAtA[i:], m.PaymentRefId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.PaymentRefId)))
+		i--
+		dAtA[i] = 0x32
+	}
+	if len(m.Currency) > 0 {
+		i -= len(m.Currency)
+		copy(dAtA[i:], m.Currency)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Currency)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.Amount) > 0 {
+		i -= len(m.Amount)
+		copy(dAtA[i:], m.Amount)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Amount)))
 		i--
 		dAtA[i] = 0x22
-	}
-	if m.Amount != nil {
-		{
-			size, err := m.Amount.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintTx(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1a
 	}
 	if len(m.CampaignId) > 0 {
 		i -= len(m.CampaignId)
 		copy(dAtA[i:], m.CampaignId)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.CampaignId)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Id) > 0 {
+		i -= len(m.Id)
+		copy(dAtA[i:], m.Id)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Id)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -534,7 +575,7 @@ func (m *MsgDonate) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgDonationResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateDonationResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -544,21 +585,16 @@ func (m *MsgDonationResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgDonationResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateDonationResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgDonationResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateDonationResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.DonationId != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.DonationId))
-		i--
-		dAtA[i] = 0x8
-	}
 	return len(dAtA) - i, nil
 }
 
@@ -597,7 +633,7 @@ func (m *MsgUpdateParamsResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgDonate) Size() (n int) {
+func (m *MsgCreateDonation) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -607,30 +643,42 @@ func (m *MsgDonate) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
+	l = len(m.Id)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
 	l = len(m.CampaignId)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	if m.Amount != nil {
-		l = m.Amount.Size()
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Memo)
+	l = len(m.Amount)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Currency)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.PaymentRefId)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.DonationHash)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.CreatedAt != 0 {
+		n += 1 + sovTx(uint64(m.CreatedAt))
 	}
 	return n
 }
 
-func (m *MsgDonationResponse) Size() (n int) {
+func (m *MsgCreateDonationResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.DonationId != 0 {
-		n += 1 + sovTx(uint64(m.DonationId))
-	}
 	return n
 }
 
@@ -805,7 +853,7 @@ func (m *MsgUpdateParamsResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgDonate) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateDonation) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -828,10 +876,10 @@ func (m *MsgDonate) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgDonate: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateDonation: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgDonate: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateDonation: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -868,6 +916,38 @@ func (m *MsgDonate) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Id = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field CampaignId", wireType)
 			}
 			var stringLen uint64
@@ -898,45 +978,9 @@ func (m *MsgDonate) Unmarshal(dAtA []byte) error {
 			}
 			m.CampaignId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Amount", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Amount == nil {
-				m.Amount = &types.Coin{}
-			}
-			if err := m.Amount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Memo", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Amount", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -964,8 +1008,123 @@ func (m *MsgDonate) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Memo = string(dAtA[iNdEx:postIndex])
+			m.Amount = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Currency", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Currency = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PaymentRefId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PaymentRefId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DonationHash", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.DonationHash = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 8:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CreatedAt", wireType)
+			}
+			m.CreatedAt = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.CreatedAt |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
@@ -987,7 +1146,7 @@ func (m *MsgDonate) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgDonationResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateDonationResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1010,31 +1169,12 @@ func (m *MsgDonationResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgDonationResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateDonationResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgDonationResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateDonationResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
-		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field DonationId", wireType)
-			}
-			m.DonationId = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.DonationId |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])

@@ -6,7 +6,6 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "overgivechain/donation/v1/params.proto";
-import "overgivechain/donation/v1/donation.proto";
 
 option go_package = "overgive-chain/x/donation/types";
 
@@ -15,21 +14,6 @@ service Query {
   // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/overgive-chain/donation/v1/params";
-  }
-
-  // Get 1 Donation by ID
-  rpc Donation (QueryGetDonationRequest) returns (QueryGetDonationResponse){
-    option (google.api.http).get = "/overgive-chain/donation/v1/donation/{id}";
-  }
-
-  // Get List of Donations using pagination
-  rpc DonationAll (QueryGetAllDonationRequest) returns (QueryGetAllDonationResponse) {
-    option (google.api.http).get = "/overgive-chain/donation/v1/donation";
-  }
-
-  // Get List of Donations By Donor
-  rpc DonationByDonor (QueryDonationByDonorRequest) returns (QueryDonationByDonorResponse) {
-    option (google.api.http).get = "/overgive-chain/donation/v1/by_donor/{donor}";
   }
 }
 
@@ -43,50 +27,4 @@ message QueryParamsResponse {
     (gogoproto.nullable) = false,
     (amino.dont_omitempty) = true
   ];
-}
-
-// Fetch 1 donation request
-message QueryGetDonationRequest {
-  // donation ID
-  uint64 id = 1;
-}
-
-// 1 donation response 
-message QueryGetDonationResponse {
-  // Donation struct
-  Donation donation = 1;
-}
-
-// Request list of all donations
-message QueryGetAllDonationRequest {
-  // pagination
-  cosmos.base.query.v1beta1.PageRequest pagination = 1;
-
-}
-
-// response list of all donations
-message QueryGetAllDonationResponse {
-  // List of Donations
-  repeated Donation donations = 1;
-
-  // pagination
-  cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
-
-// Donation request by Donor
-message QueryDonationByDonorRequest {
-  // Donor 
-  string donor = 1;
-
-  // pagination
-  cosmos.base.query.v1beta1.PageRequest pagination = 2;
-}
-
-// Donation Response by Donor
-message QueryDonationByDonorResponse {
-  // List of donations
-  repeated Donation donation = 1;
-
-  // pagination
-  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }

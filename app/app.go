@@ -1,8 +1,3 @@
-// ignite scaffold chain overgive-chain => build project
-// ignite scaffold module donation => build module
-// ignite generate proto-go => generate proto
-// ignite chain build => compile to executable binary
-
 package app
 
 import (
@@ -51,6 +46,7 @@ import (
 	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
 
 	"overgive-chain/docs"
+	deliverymodulekeeper "overgive-chain/x/delivery/keeper"
 	donationmodulekeeper "overgive-chain/x/donation/keeper"
 	overgivechainmodulekeeper "overgive-chain/x/overgivechain/keeper"
 )
@@ -59,7 +55,7 @@ const (
 	// Name is the name of the application.
 	Name = "overgive-chain"
 	// AccountAddressPrefix is the prefix for accounts addresses.
-	AccountAddressPrefix = "cosmos"
+	AccountAddressPrefix = "overgive"
 	// ChainCoinType is the coin type of the chain.
 	ChainCoinType = 118
 )
@@ -108,6 +104,7 @@ type App struct {
 	sm                  *module.SimulationManager
 	OvergivechainKeeper overgivechainmodulekeeper.Keeper
 	DonationKeeper      donationmodulekeeper.Keeper
+	DeliveryKeeper      deliverymodulekeeper.Keeper
 }
 
 func init() {
@@ -189,6 +186,7 @@ func New(
 		&app.ParamsKeeper,
 		&app.OvergivechainKeeper,
 		&app.DonationKeeper,
+		&app.DeliveryKeeper,
 	); err != nil {
 		panic(err)
 	}

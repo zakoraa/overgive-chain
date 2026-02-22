@@ -28,6 +28,12 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod: "UpdateParams",
 					Skip:      true, // skipped because authority gated
 				},
+				{
+					RpcMethod:      "CreateDonation",
+					Use:            "create-donation [id] [campaign-id] [amount] [currency] [payment-ref-id] [donation-hash] [created-at]",
+					Short:          "Send a create-donation tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "id"}, {ProtoField: "campaign_id"}, {ProtoField: "amount"}, {ProtoField: "currency"}, {ProtoField: "payment_ref_id"}, {ProtoField: "donation_hash"}, {ProtoField: "created_at"}},
+				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},
 		},

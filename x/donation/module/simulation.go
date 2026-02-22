@@ -1,9 +1,13 @@
 package donation
 
 import (
+	"math/rand"
+
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
+	"github.com/cosmos/cosmos-sdk/x/simulation"
 
+	donationsimulation "overgive-chain/x/donation/simulation"
 	"overgive-chain/x/donation/types"
 )
 
@@ -25,6 +29,22 @@ func (am AppModule) RegisterStoreDecoder(_ simtypes.StoreDecoderRegistry) {}
 // WeightedOperations returns the all the gov module operations with their respective weights.
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
+	const (
+		opWeightMsgCreateDonation          = "op_weight_msg_donation"
+		defaultWeightMsgCreateDonation int = 100
+	)
+
+	var weightMsgCreateDonation int
+	simState.AppParams.GetOrGenerate(opWeightMsgCreateDonation, &weightMsgCreateDonation, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateDonation = defaultWeightMsgCreateDonation
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateDonation,
+		donationsimulation.SimulateMsgCreateDonation(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
+	))
+
 	return operations
 }
 
