@@ -10,4 +10,6 @@ option go_package = "overgive-chain/x/donation/types";
 message Params {
   option (amino.name) = "overgivechain/x/donation/Params";
   option (gogoproto.equal) = true;
+
+  repeated string allowed_writers = 1;
 }

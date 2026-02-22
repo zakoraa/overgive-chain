@@ -21,6 +21,10 @@ type Keeper struct {
 
 	Schema collections.Schema
 	Params collections.Item[types.Params]
+
+	Deliveries collections.Map[uint64, types.Delivery]
+
+	DeliverySeq collections.Sequence
 }
 
 func NewKeeper(
@@ -43,6 +47,20 @@ func NewKeeper(
 		authority:    authority,
 
 		Params: collections.NewItem(sb, types.ParamsKey, "params", codec.CollValue[types.Params](cdc)),
+
+		Deliveries: collections.NewMap(
+			sb,
+			types.DeliveryKeyPrefix,
+			"deliveries",
+			collections.Uint64Key,
+			codec.CollValue[types.Delivery](cdc),
+		),
+
+		DeliverySeq: collections.NewSequence(
+			sb,
+			types.DeliverySeqKey,
+			"delivery_seq",
+		),
 	}
 
 	schema, err := sb.Build()

@@ -22,11 +22,9 @@ type Keeper struct {
 	Schema collections.Schema
 	Params collections.Item[types.Params]
 
-	// donation indexed key-value store
-	Donations collections.Map[uint64, types.Donation]
-
-	// auto increment counter
-	DonationSeq collections.Sequence
+	Donations      collections.Map[uint64, types.Donation]
+	DonationSeq    collections.Sequence
+	DonationsByHash collections.Map[string, uint64]
 }
 
 func NewKeeper(
@@ -49,6 +47,28 @@ func NewKeeper(
 		authority:    authority,
 
 		Params: collections.NewItem(sb, types.ParamsKey, "params", codec.CollValue[types.Params](cdc)),
+
+		Donations: collections.NewMap(
+			sb,
+			types.DonationKeyPrefix,
+			"donations",
+			collections.Uint64Key,
+			codec.CollValue[types.Donation](cdc),
+		),
+
+		DonationSeq: collections.NewSequence(
+			sb,
+			types.DonationSeqKey,
+			"donation_seq",
+		),
+
+		DonationsByHash: collections.NewMap(
+			sb,
+			types.DonationHashKeyPrefix,
+			"donation_by_hash",
+			collections.StringKey,
+			collections.Uint64Value,
+		),
 	}
 
 	schema, err := sb.Build()
