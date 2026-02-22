@@ -70,12 +70,12 @@ func (q queryServer) DonationAll(
 		req.Pagination,
 		func(key []byte, value []byte) error {
 
-			var donation *types.Donation
-			if err := q.k.cdc.Unmarshal(value, donation); err != nil {
+			var donation types.Donation
+				if err := q.k.cdc.Unmarshal(value, &donation); err != nil {
 				return err
 			}
 
-			donations = append(donations, donation)
+			donations = append(donations, &donation)
 			return nil
 		},
 	)

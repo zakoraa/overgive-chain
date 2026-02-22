@@ -28,7 +28,7 @@ func TestMsgDonate_Success(t *testing.T) {
 		Creator:    donor,
 		CampaignId: "campaign-1",
 		Amount:     &coin,
-		Memmo:      "support",
+		Memo:      "support",
 	}
 
 	res, err := msgServer.Donate(sdk.WrapSDKContext(ctx), msg)
@@ -58,7 +58,7 @@ func TestMsgDonate_InvalidDenom(t *testing.T) {
 		Creator:    donor,
 		CampaignId: "campaign-1",
 		Amount:     &coin,
-		Memmo:      "",
+		Memo:      "",
 	}
 
 	_, err := msgServer.Donate(sdk.WrapSDKContext(ctx), msg)
@@ -78,7 +78,7 @@ func TestMsgDonate_InvalidAmount(t *testing.T) {
 		Creator:    donor,
 		CampaignId: "campaign-1",
 		Amount:     &coin,
-		Memmo:      "",
+		Memo:      "",
 	}
 
 	_, err := msgServer.Donate(sdk.WrapSDKContext(ctx), msg)
@@ -98,7 +98,7 @@ func TestMsgDonate_EmptyCampaign(t *testing.T) {
 		Creator:    donor,
 		CampaignId: "",
 		Amount:     &coin,
-		Memmo:      "",
+		Memo:      "",
 	}
 
 	_, err := msgServer.Donate(sdk.WrapSDKContext(ctx), msg)

@@ -59,7 +59,7 @@ message MsgDonate {
   cosmos.base.v1beta1.Coin amount = 3;
 
   // Message from donor
-  string memmo = 4;
+  string memo = 4;
 }
 
 message MsgDonationResponse {

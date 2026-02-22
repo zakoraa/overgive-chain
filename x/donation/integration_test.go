@@ -8,8 +8,8 @@ import (
 
 	donationkeeper "overgive-chain/x/donation/keeper"
 
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -48,7 +48,7 @@ func TestIntegration_MsgDonate(t *testing.T) {
 		Creator:    donor.String(),
 		CampaignId: "campaign-1",
 		Amount:     &coin,
-		Memmo:      "integration-test",
+		Memo:      "integration-test",
 	}
 
 	// Get msg service

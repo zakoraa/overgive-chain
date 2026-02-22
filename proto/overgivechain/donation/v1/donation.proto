@@ -21,7 +21,7 @@ message Donation {
     cosmos.base.v1beta1.Coin amount = 4;
 
     // Block timestamp when donation created
-    int64 craeted_at = 5;
+    int64 created_at = 5;
 
     // Message from donor (max 256 char)
     string memo = 6;

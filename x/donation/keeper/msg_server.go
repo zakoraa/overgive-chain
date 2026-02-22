@@ -47,7 +47,7 @@ func (m msgServer) Donate(
 	}
 
 	// Validate memo max 256 char
-	if len(msg.Memmo) > 256 {
+	if len(msg.Memo) > 256 {
 		return nil, types.ErrInvalidMemo
 	}
 
@@ -92,8 +92,8 @@ func (m msgServer) Donate(
 		Donor:      msg.Creator,
 		CampaignId: msg.CampaignId,
 		Amount:     msg.Amount,
-		CraetedAt:  sdkCtx.BlockTime().Unix(),
-		Memo:       msg.Memmo,
+		CreatedAt:  sdkCtx.BlockTime().Unix(),
+		Memo:       msg.Memo,
 	}
 
 	// Store to primary storage
