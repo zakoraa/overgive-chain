@@ -45,7 +45,6 @@ type ModuleOutputs struct {
 	depinject.Out
 
 	DeliveryKeeper keeper.Keeper
-	PermissionsKeeper keeper.Keeper
 	Module         appmodule.AppModule
 }
 
