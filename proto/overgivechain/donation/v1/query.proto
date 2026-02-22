@@ -13,8 +13,13 @@ option go_package = "overgive-chain/x/donation/types";
 // Query defines the gRPC querier service.
 service Query {
   // Parameters queries the parameters of the module.
-    rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/overgivechain/donation/v1/params";
+  }
+
+  // Get Donation list with pagination
+  rpc Donations(QueryDonationsRequest) returns (QueryDonationsResponse) {
+    option (google.api.http).get = "/overgivechain/donation/v1/donations";
   }
 
   // Get Donation By ID
@@ -39,6 +44,19 @@ message QueryParamsResponse {
     (amino.dont_omitempty) = true
   ];
 }
+
+
+// Request for Get All Donations
+message QueryDonationsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// Reponse for Get All Donations
+message QueryDonationsResponse {
+  repeated Donation donations = 1;
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
 
 // Request for Get Donation By ID
 message QueryGetDonationRequest {
