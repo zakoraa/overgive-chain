@@ -12,15 +12,33 @@ option go_package = "overgive-chain/x/delivery/types";
 
 // Query defines the gRPC querier service.
 service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/overgivechain/delivery/v1/params";
+  }
+
+
   // Get Delivery By ID
   rpc Delivery(QueryGetDeliveryRequest) returns (QueryGetDeliveryResponse) {
-    option (google.api.http).get = "/overgive/delivery/{id}";
+    option (google.api.http).get = "/overgivechain/delivery/v1/deliveries/{id}";
   }
 
   // Get Delivery By ID
   rpc DeliveryByHash(QueryDeliveryByHashRequest) returns (QueryDeliveryByHashResponse) {
-    option (google.api.http).get = "/overgive/delivery/hash/{delivery_hash}";
+    option (google.api.http).get = "/overgivechain/delivery/v1/deliveries/hash/{delivery_hash}";
   }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
 }
 
 // Request for Get Delivery By ID

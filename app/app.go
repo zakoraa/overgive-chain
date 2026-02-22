@@ -38,12 +38,12 @@ import (
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	consensuskeeper "github.com/cosmos/cosmos-sdk/x/consensus/keeper"
 
-	// distrkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
+	distrkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
 
-	// mintkeeper "github.com/cosmos/cosmos-sdk/x/mint/keeper"
+	mintkeeper "github.com/cosmos/cosmos-sdk/x/mint/keeper"
 	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	slashingkeeper "github.com/cosmos/cosmos-sdk/x/slashing/keeper"
@@ -93,8 +93,8 @@ type App struct {
 	BankKeeper     bankkeeper.Keeper
 	StakingKeeper  *stakingkeeper.Keeper
 	SlashingKeeper slashingkeeper.Keeper
-	// MintKeeper            mintkeeper.Keeper
-	// DistrKeeper           distrkeeper.Keeper
+	MintKeeper            mintkeeper.Keeper
+	DistrKeeper           distrkeeper.Keeper
 	GovKeeper             *govkeeper.Keeper
 	UpgradeKeeper         *upgradekeeper.Keeper
 	AuthzKeeper           authzkeeper.Keeper
@@ -184,8 +184,8 @@ func New(
 		&app.BankKeeper,
 		&app.StakingKeeper,
 		&app.SlashingKeeper,
-		// &app.MintKeeper,
-		// &app.DistrKeeper,
+		&app.MintKeeper,
+		&app.DistrKeeper,
 		&app.GovKeeper,
 		&app.UpgradeKeeper,
 		&app.AuthzKeeper,

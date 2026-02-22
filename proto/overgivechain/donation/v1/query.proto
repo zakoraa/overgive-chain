@@ -12,15 +12,32 @@ option go_package = "overgive-chain/x/donation/types";
 
 // Query defines the gRPC querier service.
 service Query {
-  // Get Donation By ID
-  rpc Donation(QueryGetDonationRequest) returns (QueryGetDonationResponse) {
-    option (google.api.http).get = "/overgive/donation/{id}";
+  // Parameters queries the parameters of the module.
+    rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/overgivechain/donation/v1/params";
   }
 
   // Get Donation By ID
-  rpc DonationByHash(QueryDonationByHashRequest) returns (QueryDonationByHashResponse) {
-    option (google.api.http).get = "/overgive/donation/hash/{donation_hash}";
+  rpc Donation(QueryGetDonationRequest) returns (QueryGetDonationResponse) {
+    option (google.api.http).get = "/overgivechain/donation/v1/donations/{id}";
   }
+
+  // Get Donation By Hash
+  rpc DonationByHash(QueryDonationByHashRequest) returns (QueryDonationByHashResponse) {
+    option (google.api.http).get = "/overgivechain/donation/v1/donations/hash/{donation_hash}";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
 }
 
 // Request for Get Donation By ID
