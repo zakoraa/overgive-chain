@@ -14,10 +14,11 @@ const (
 	// See: https://github.com/cosmos/cosmos-sdk/blob/v0.52.0-beta.2/x/gov/types/keys.go#L9
 	GovModuleName = "gov"
 )
+
 // Prefixes (collections API)
 var (
-	ParamsKey = collections.NewPrefix(0)
-	DonationKeyPrefix = collections.NewPrefix(1)
-	DonationSeqKey = collections.NewPrefix(2)
+	ParamsKey             = collections.NewPrefix(0)
+	DonationKeyPrefix     = collections.NewPrefix(1)
+	DonationSeqKey        = collections.NewPrefix(2)
 	DonationHashKeyPrefix = collections.NewPrefix(3)
 )

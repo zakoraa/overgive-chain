@@ -8,18 +8,6 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// var _ types.QueryServer = queryServer{}
-
-// // NewQueryServerImpl returns an implementation of the QueryServer interface
-// // for the provided Keeper.
-// func NewQueryServerImpl(k Keeper) types.QueryServer {
-// 	return queryServer{k}
-// }
-
-// type queryServer struct {
-// 	k Keeper
-// }
-
 func (k Keeper) Donation(
 	goCtx context.Context,
 	req *types.QueryGetDonationRequest,

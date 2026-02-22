@@ -5,26 +5,21 @@ import "amino/amino.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
-import "overgivechain/donation/v1/params.proto";
 import "overgivechain/donation/v1/donation.proto";
-
+import "overgivechain/donation/v1/params.proto";
 
 option go_package = "overgive-chain/x/donation/types";
 
 // Query defines the gRPC querier service.
 service Query {
   // Get Donation By ID
-   rpc Donation(QueryGetDonationRequest)
-      returns (QueryGetDonationResponse) {
-    option (google.api.http).get =
-      "/overgive/donation/{id}";
+  rpc Donation(QueryGetDonationRequest) returns (QueryGetDonationResponse) {
+    option (google.api.http).get = "/overgive/donation/{id}";
   }
 
   // Get Donation By ID
-  rpc DonationByHash(QueryDonationByHashRequest)
-      returns (QueryDonationByHashResponse) {
-    option (google.api.http).get =
-      "/overgive/donation/hash/{donation_hash}";
+  rpc DonationByHash(QueryDonationByHashRequest) returns (QueryDonationByHashResponse) {
+    option (google.api.http).get = "/overgive/donation/hash/{donation_hash}";
   }
 }
 

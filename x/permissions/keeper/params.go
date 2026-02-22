@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"overgive-chain/x/donation/types"
+	"overgive-chain/x/permissions/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

@@ -19,7 +19,7 @@ func (k msgServer) RecordDonation(goCtx context.Context, msg *types.MsgRecordDon
 	}
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	isAllowed, err := k.IsAllowedWriter(ctx, msg.Creator)
+	isAllowed, err := k.permissionsKeeper.IsAllowedWriter(ctx, msg.Creator)
 	if err != nil {
 		return nil, err
 	}
@@ -92,12 +92,14 @@ func (k msgServer) RecordDonation(goCtx context.Context, msg *types.MsgRecordDon
 		return nil, err
 	}
 
-	sdk.NewEvent(
-		types.EventTypeDonationRecorded,
-		sdk.NewAttribute(types.AttributeKeyDonationID, fmt.Sprintf("%d", id)),
-		sdk.NewAttribute(types.AttributeKeyCampaignID, msg.CampaignId),
-		sdk.NewAttribute(types.AttributeKeyDonationHash, msg.DonationHash),
-		sdk.NewAttribute(types.AttributeKeyCreator, msg.Creator),
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeDonationRecorded,
+			sdk.NewAttribute(types.AttributeKeyDonationID, fmt.Sprintf("%d", id)),
+			sdk.NewAttribute(types.AttributeKeyCampaignID, msg.CampaignId),
+			sdk.NewAttribute(types.AttributeKeyDonationHash, msg.DonationHash),
+			sdk.NewAttribute(types.AttributeKeyCreator, msg.Creator),
+		),
 	)
 
 	return &types.MsgRecordDonationResponse{

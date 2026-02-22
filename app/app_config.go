@@ -5,6 +5,8 @@ import (
 	deliverymoduletypes "overgive-chain/x/delivery/types"
 	_ "overgive-chain/x/donation/module"
 	donationmoduletypes "overgive-chain/x/donation/types"
+	_ "overgive-chain/x/permissions/module"
+	permissionsmoduletypes "overgive-chain/x/permissions/types"
 	"time"
 
 	runtimev1alpha1 "cosmossdk.io/api/cosmos/app/runtime/v1alpha1"
@@ -14,6 +16,7 @@ import (
 	bankmodulev1 "cosmossdk.io/api/cosmos/bank/module/v1"
 	circuitmodulev1 "cosmossdk.io/api/cosmos/circuit/module/v1"
 	consensusmodulev1 "cosmossdk.io/api/cosmos/consensus/module/v1"
+
 	// distrmodulev1 "cosmossdk.io/api/cosmos/distribution/module/v1"
 	epochsmodulev1 "cosmossdk.io/api/cosmos/epochs/module/v1"
 	evidencemodulev1 "cosmossdk.io/api/cosmos/evidence/module/v1"
@@ -21,6 +24,7 @@ import (
 	genutilmodulev1 "cosmossdk.io/api/cosmos/genutil/module/v1"
 	govmodulev1 "cosmossdk.io/api/cosmos/gov/module/v1"
 	groupmodulev1 "cosmossdk.io/api/cosmos/group/module/v1"
+
 	// mintmodulev1 "cosmossdk.io/api/cosmos/mint/module/v1"
 	nftmodulev1 "cosmossdk.io/api/cosmos/nft/module/v1"
 	paramsmodulev1 "cosmossdk.io/api/cosmos/params/module/v1"
@@ -52,6 +56,7 @@ import (
 	_ "github.com/cosmos/cosmos-sdk/x/consensus" // import for side-effects
 	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
 	_ "github.com/cosmos/cosmos-sdk/x/distribution" // import for side-effects
+
 	// distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	_ "github.com/cosmos/cosmos-sdk/x/epochs" // import for side-effects
 	epochstypes "github.com/cosmos/cosmos-sdk/x/epochs/types"
@@ -61,6 +66,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/group"
 	_ "github.com/cosmos/cosmos-sdk/x/group/module" // import for side-effects
 	_ "github.com/cosmos/cosmos-sdk/x/mint"         // import for side-effects
+
 	// minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	_ "github.com/cosmos/cosmos-sdk/x/params" // import for side-effects
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
@@ -129,6 +135,7 @@ var (
 						// chain modules
 						donationmoduletypes.ModuleName,
 						deliverymoduletypes.ModuleName,
+						permissionsmoduletypes.ModuleName,
 						// this line is used by starport scaffolding # stargate/app/beginBlockers
 					},
 					EndBlockers: []string{
@@ -139,6 +146,7 @@ var (
 						// chain modules
 						donationmoduletypes.ModuleName,
 						deliverymoduletypes.ModuleName,
+						permissionsmoduletypes.ModuleName,
 						// this line is used by starport scaffolding # stargate/app/endBlockers
 					},
 					// The following is mostly only needed when ModuleName != StoreKey name.
@@ -177,6 +185,7 @@ var (
 						// chain modules
 						donationmoduletypes.ModuleName,
 						deliverymoduletypes.ModuleName,
+						permissionsmoduletypes.ModuleName,
 						// this line is used by starport scaffolding # stargate/app/initGenesis
 					},
 				}),
@@ -280,6 +289,10 @@ var (
 			{
 				Name:   deliverymoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&deliverymoduletypes.Module{}),
+			},
+			{
+				Name:   permissionsmoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&permissionsmoduletypes.Module{}),
 			},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},

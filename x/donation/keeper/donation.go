@@ -2,10 +2,15 @@ package keeper
 
 import (
 	"context"
+	"errors"
 	"overgive-chain/x/donation/types"
 )
 
 func (k Keeper) AppendDonation(ctx context.Context, donation types.Donation) (uint64, error) {
+	if _, err := k.DonationsByHash.Get(ctx, donation.DonationHash); err == nil {
+		return 0, errors.New("duplicate hash")
+	}
+
 	id, err := k.DonationSeq.Next(ctx)
 	if err != nil {
 		return 0, err

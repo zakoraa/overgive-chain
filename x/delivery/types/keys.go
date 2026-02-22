@@ -16,9 +16,10 @@ const (
 )
 
 var (
-	ParamsKey = collections.NewPrefix(0)
-	DeliveryKeyPrefix = collections.NewPrefix(1)
-	DeliverySeqKey = collections.NewPrefix(2)
+	ParamsKey             = collections.NewPrefix(0)
+	DeliveryKeyPrefix     = collections.NewPrefix(1)
+	DeliverySeqKey        = collections.NewPrefix(2)
+	DeliveryHashKeyPrefix = collections.NewPrefix(3)
 )
 
 // ParamsKey is the prefix to retrieve all Params

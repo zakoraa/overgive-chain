@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"overgive-chain/x/delivery/keeper"
-	"overgive-chain/x/delivery/types"
+	"overgive-chain/x/permissions/keeper"
+	"overgive-chain/x/permissions/types"
 )
 
 func TestParamsQuery(t *testing.T) {

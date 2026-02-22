@@ -18,6 +18,12 @@ import (
 	"overgive-chain/x/delivery/types"
 )
 
+type mockPermissionsKeeper struct{}
+
+func (m mockPermissionsKeeper) IsAllowedWriter(ctx sdk.Context, addr string) (bool, error) {
+	return true, nil
+}
+
 type fixture struct {
 	ctx          context.Context
 	keeper       keeper.Keeper
@@ -41,6 +47,7 @@ func initFixture(t *testing.T) *fixture {
 		encCfg.Codec,
 		addressCodec,
 		authority,
+		mockPermissionsKeeper{},
 	)
 
 	// Initialize params

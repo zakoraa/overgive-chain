@@ -9,7 +9,13 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 
 	"overgive-chain/x/donation/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
+
+type PermissionsKeeper interface {
+	IsAllowedWriter(ctx sdk.Context, addr string) (bool, error)
+}
 
 type Keeper struct {
 	storeService corestore.KVStoreService
@@ -19,11 +25,13 @@ type Keeper struct {
 	// Typically, this should be the x/gov module account.
 	authority []byte
 
+	permissionsKeeper PermissionsKeeper
+
 	Schema collections.Schema
 	Params collections.Item[types.Params]
 
-	Donations      collections.Map[uint64, types.Donation]
-	DonationSeq    collections.Sequence
+	Donations       collections.Map[uint64, types.Donation]
+	DonationSeq     collections.Sequence
 	DonationsByHash collections.Map[string, uint64]
 }
 
@@ -32,7 +40,7 @@ func NewKeeper(
 	cdc codec.Codec,
 	addressCodec address.Codec,
 	authority []byte,
-
+	permissionsKeeper PermissionsKeeper,
 ) Keeper {
 	if _, err := addressCodec.BytesToString(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address %s: %s", authority, err))
@@ -65,7 +73,7 @@ func NewKeeper(
 		DonationsByHash: collections.NewMap(
 			sb,
 			types.DonationHashKeyPrefix,
-			"donation_by_hash",
+			"donations_by_hash",
 			collections.StringKey,
 			collections.Uint64Value,
 		),

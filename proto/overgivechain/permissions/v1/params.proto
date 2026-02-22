@@ -1,0 +1,15 @@
+syntax = "proto3";
+package overgivechain.permissions.v1;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "overgive-chain/x/permissions/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "overgivechain/x/permissions/Params";
+  option (gogoproto.equal) = true;
+
+  repeated string allowed_writers = 1;
+}

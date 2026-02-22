@@ -1,3 +1,9 @@
+// ignite scaffold chain overgive-chain => build project
+// ignite scaffold module donation => build module
+// ignite generate proto-go => generate proto
+// ignite chain build => compile to executable binary
+// ignite chain serve => run local
+
 package app
 
 import (
@@ -31,10 +37,12 @@ import (
 	authzkeeper "github.com/cosmos/cosmos-sdk/x/authz/keeper"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	consensuskeeper "github.com/cosmos/cosmos-sdk/x/consensus/keeper"
+
 	// distrkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
+
 	// mintkeeper "github.com/cosmos/cosmos-sdk/x/mint/keeper"
 	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
@@ -48,6 +56,7 @@ import (
 	"overgive-chain/docs"
 	deliverymodulekeeper "overgive-chain/x/delivery/keeper"
 	donationmodulekeeper "overgive-chain/x/donation/keeper"
+	permissionsmodulekeeper "overgive-chain/x/permissions/keeper"
 )
 
 const (
@@ -80,10 +89,10 @@ type App struct {
 	// keepers
 	// only keepers required by the app are exposed
 	// the list of all modules is available in the app_config
-	AuthKeeper            authkeeper.AccountKeeper
-	BankKeeper            bankkeeper.Keeper
-	StakingKeeper         *stakingkeeper.Keeper
-	SlashingKeeper        slashingkeeper.Keeper
+	AuthKeeper     authkeeper.AccountKeeper
+	BankKeeper     bankkeeper.Keeper
+	StakingKeeper  *stakingkeeper.Keeper
+	SlashingKeeper slashingkeeper.Keeper
 	// MintKeeper            mintkeeper.Keeper
 	// DistrKeeper           distrkeeper.Keeper
 	GovKeeper             *govkeeper.Keeper
@@ -100,9 +109,10 @@ type App struct {
 	TransferKeeper      ibctransferkeeper.Keeper
 
 	// simulation manager
-	sm             *module.SimulationManager
-	DonationKeeper donationmodulekeeper.Keeper
-	DeliveryKeeper deliverymodulekeeper.Keeper
+	sm                *module.SimulationManager
+	DonationKeeper    donationmodulekeeper.Keeper
+	DeliveryKeeper    deliverymodulekeeper.Keeper
+	PermissionsKeeper permissionsmodulekeeper.Keeper
 }
 
 func init() {
@@ -184,6 +194,7 @@ func New(
 		&app.ParamsKeeper,
 		&app.DonationKeeper,
 		&app.DeliveryKeeper,
+		&app.PermissionsKeeper,
 	); err != nil {
 		panic(err)
 	}

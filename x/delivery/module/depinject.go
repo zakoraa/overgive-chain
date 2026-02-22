@@ -11,6 +11,8 @@ import (
 
 	"overgive-chain/x/delivery/keeper"
 	"overgive-chain/x/delivery/types"
+	permissionskeeper "overgive-chain/x/permissions/keeper"
+
 )
 
 var _ depinject.OnePerModuleType = AppModule{}
@@ -35,12 +37,15 @@ type ModuleInputs struct {
 
 	AuthKeeper types.AuthKeeper
 	BankKeeper types.BankKeeper
+
+	PermissionsKeeper permissionskeeper.Keeper
 }
 
 type ModuleOutputs struct {
 	depinject.Out
 
 	DeliveryKeeper keeper.Keeper
+	PermissionsKeeper keeper.Keeper
 	Module         appmodule.AppModule
 }
 
@@ -55,6 +60,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.Cdc,
 		in.AddressCodec,
 		authority,
+		in.PermissionsKeeper,
 	)
 	m := NewAppModule(in.Cdc, k, in.AuthKeeper, in.BankKeeper)
 

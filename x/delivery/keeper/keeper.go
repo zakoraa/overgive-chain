@@ -9,7 +9,13 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 
 	"overgive-chain/x/delivery/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
+
+type PermissionsKeeper interface {
+	IsAllowedWriter(ctx sdk.Context, addr string) (bool, error)
+}
 
 type Keeper struct {
 	storeService corestore.KVStoreService
@@ -22,9 +28,11 @@ type Keeper struct {
 	Schema collections.Schema
 	Params collections.Item[types.Params]
 
-	Deliveries collections.Map[uint64, types.Delivery]
+	permissionsKeeper PermissionsKeeper
 
-	DeliverySeq collections.Sequence
+	Deliveries       collections.Map[uint64, types.Delivery]
+	DeliverySeq      collections.Sequence
+	DeliveriesByHash collections.Map[string, uint64]
 }
 
 func NewKeeper(
@@ -32,6 +40,7 @@ func NewKeeper(
 	cdc codec.Codec,
 	addressCodec address.Codec,
 	authority []byte,
+	permissionsKeeper PermissionsKeeper,
 
 ) Keeper {
 	if _, err := addressCodec.BytesToString(authority); err != nil {
@@ -60,6 +69,14 @@ func NewKeeper(
 			sb,
 			types.DeliverySeqKey,
 			"delivery_seq",
+		),
+
+		DeliveriesByHash: collections.NewMap(
+			sb,
+			types.DeliveryHashKeyPrefix,
+			"deliveries_by_hash",
+			collections.StringKey,
+			collections.Uint64Value,
 		),
 	}
 

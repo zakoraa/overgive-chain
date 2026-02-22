@@ -5,25 +5,21 @@ import "amino/amino.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
-import "overgivechain/delivery/v1/params.proto";
 import "overgivechain/delivery/v1/delivery.proto";
+import "overgivechain/delivery/v1/params.proto";
 
 option go_package = "overgive-chain/x/delivery/types";
 
 // Query defines the gRPC querier service.
 service Query {
   // Get Delivery By ID
-   rpc Delivery(QueryGetDeliveryRequest)
-      returns (QueryGetDeliveryResponse) {
-    option (google.api.http).get =
-      "/overgive/delivery/{id}";
+  rpc Delivery(QueryGetDeliveryRequest) returns (QueryGetDeliveryResponse) {
+    option (google.api.http).get = "/overgive/delivery/{id}";
   }
 
   // Get Delivery By ID
-  rpc DeliveryByHash(QueryDeliveryByHashRequest)
-      returns (QueryDeliveryByHashResponse) {
-    option (google.api.http).get =
-      "/overgive/delivery/hash/{delivery_hash}";
+  rpc DeliveryByHash(QueryDeliveryByHashRequest) returns (QueryDeliveryByHashResponse) {
+    option (google.api.http).get = "/overgive/delivery/hash/{delivery_hash}";
   }
 }
 
