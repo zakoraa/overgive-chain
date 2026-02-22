@@ -4,8 +4,6 @@ import (
 	"context"
 	"testing"
 
-	donationkeeper "overgive-chain/x/donation/keeper"
-
 	"cosmossdk.io/core/address"
 	storetypes "cosmossdk.io/store/types"
 	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
@@ -19,26 +17,6 @@ import (
 	module "overgive-chain/x/donation/module"
 	"overgive-chain/x/donation/types"
 )
-
-type mockBankKeeper struct {
-	balances map[string]sdk.Coins
-}
-
-func (m mockBankKeeper) SpendableCoins(
-	ctx context.Context,
-	addr sdk.AccAddress,
-) sdk.Coins {
-	return sdk.NewCoins()
-}
-
-func (m mockBankKeeper) SendCoinsFromAccountToModule(
-	ctx context.Context,
-	senderAddr sdk.AccAddress,
-	recipientModule string,
-	amt sdk.Coins,
-) error {
-	return nil
-}
 
 type fixture struct {
 	ctx          context.Context
@@ -56,14 +34,13 @@ func initFixture(t *testing.T) *fixture {
 	storeService := runtime.NewKVStoreService(storeKey)
 	ctx := testutil.DefaultContextWithDB(t, storeKey, storetypes.NewTransientStoreKey("transient_test")).Ctx
 
-	authority := authtypes.NewModuleAddress(types.GovModuleName).Bytes()
+	authority := authtypes.NewModuleAddress(types.GovModuleName)
 
 	k := keeper.NewKeeper(
 		storeService,
 		encCfg.Codec,
 		addressCodec,
 		authority,
-		mockBankKeeper{},
 	)
 
 	// Initialize params
@@ -76,38 +53,4 @@ func initFixture(t *testing.T) *fixture {
 		keeper:       k,
 		addressCodec: addressCodec,
 	}
-}
-
-func setupKeeper(t *testing.T) (*donationkeeper.Keeper, sdk.Context, *mockBankKeeper) {
-	t.Helper()
-
-	encCfg := moduletestutil.MakeTestEncodingConfig(module.AppModule{})
-	addressCodec := addresscodec.NewBech32Codec(
-		sdk.GetConfig().GetBech32AccountAddrPrefix(),
-	)
-
-	storeKey := storetypes.NewKVStoreKey(types.StoreKey)
-	storeService := runtime.NewKVStoreService(storeKey)
-
-	ctx := testutil.DefaultContextWithDB(
-		t,
-		storeKey,
-		storetypes.NewTransientStoreKey("transient_test"),
-	).Ctx
-
-	authority := authtypes.NewModuleAddress(types.GovModuleName).Bytes()
-
-	mockBank := &mockBankKeeper{
-		balances: make(map[string]sdk.Coins),
-	}
-
-	k := donationkeeper.NewKeeper(
-		storeService,
-		encCfg.Codec,
-		addressCodec,
-		authority,
-		mockBank,
-	)
-
-	return &k, ctx, mockBank
 }

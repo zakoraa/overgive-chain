@@ -1,10 +1,10 @@
 package app
 
 import (
+	_ "overgive-chain/x/delivery/module"
+	deliverymoduletypes "overgive-chain/x/delivery/types"
 	_ "overgive-chain/x/donation/module"
 	donationmoduletypes "overgive-chain/x/donation/types"
-	_ "overgive-chain/x/overgivechain/module"
-	overgivechainmoduletypes "overgive-chain/x/overgivechain/types"
 	"time"
 
 	runtimev1alpha1 "cosmossdk.io/api/cosmos/app/runtime/v1alpha1"
@@ -127,8 +127,8 @@ var (
 						// ibc modules
 						ibcexported.ModuleName,
 						// chain modules
-						overgivechainmoduletypes.ModuleName,
 						donationmoduletypes.ModuleName,
+						deliverymoduletypes.ModuleName,
 						// this line is used by starport scaffolding # stargate/app/beginBlockers
 					},
 					EndBlockers: []string{
@@ -137,8 +137,8 @@ var (
 						feegrant.ModuleName,
 						group.ModuleName,
 						// chain modules
-						overgivechainmoduletypes.ModuleName,
 						donationmoduletypes.ModuleName,
+						deliverymoduletypes.ModuleName,
 						// this line is used by starport scaffolding # stargate/app/endBlockers
 					},
 					// The following is mostly only needed when ModuleName != StoreKey name.
@@ -175,8 +175,8 @@ var (
 						ibctransfertypes.ModuleName,
 						icatypes.ModuleName,
 						// chain modules
-						overgivechainmoduletypes.ModuleName,
 						donationmoduletypes.ModuleName,
+						deliverymoduletypes.ModuleName,
 						// this line is used by starport scaffolding # stargate/app/initGenesis
 					},
 				}),
@@ -274,12 +274,12 @@ var (
 				Config: appconfig.WrapAny(&epochsmodulev1.Module{}),
 			},
 			{
-				Name:   overgivechainmoduletypes.ModuleName,
-				Config: appconfig.WrapAny(&overgivechainmoduletypes.Module{}),
-			},
-			{
 				Name:   donationmoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&donationmoduletypes.Module{}),
+			},
+			{
+				Name:   deliverymoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&deliverymoduletypes.Module{}),
 			},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},

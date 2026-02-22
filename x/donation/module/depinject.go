@@ -54,8 +54,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.StoreService,
 		in.Cdc,
 		in.AddressCodec,
-		authority.Bytes(),
-		in.BankKeeper,
+		authority,
 	)
 	m := NewAppModule(in.Cdc, k, in.AuthKeeper, in.BankKeeper)
 

@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package overgivechain.delivery.v1;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "overgivechain/delivery/v1/params.proto";
+
+option go_package = "overgive-chain/x/delivery/types";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+
+  // RecordDelivery defines the RecordDelivery RPC.
+  rpc RecordDelivery(MsgRecordDelivery) returns (MsgRecordDeliveryResponse);
+}
+
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "overgivechain/x/delivery/MsgUpdateParams";
+
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // params defines the module parameters to update.
+
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+// MsgRecordDelivery defines the MsgRecordDelivery message.
+message MsgRecordDelivery {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string campaign_id = 2;
+  string title = 3;
+  string note_hash = 4;
+  string delivery_hash = 5;
+}
+
+// MsgRecordDeliveryResponse defines the MsgRecordDeliveryResponse message.
+message MsgRecordDeliveryResponse {}
