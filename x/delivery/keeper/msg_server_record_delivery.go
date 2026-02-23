@@ -62,10 +62,11 @@ func (k msgServer) RecordDelivery(
 		)
 	}
 
-	if len(msg.DeliveryHash) != 64 {
+	decodedHash, err := hex.DecodeString(msg.DeliveryHash)
+	if err != nil || len(decodedHash) != 32 {
 		return nil, errorsmod.Wrap(
 			sdkerrors.ErrInvalidRequest,
-			"delivery_hash must be 64 characters",
+			"delivery_hash must be valid 32-byte hex",
 		)
 	}
 

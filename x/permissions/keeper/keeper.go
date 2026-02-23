@@ -19,8 +19,8 @@ type Keeper struct {
 	// Typically, this should be the x/gov module account.
 	authority []byte
 
-	Schema collections.Schema
-	Params collections.Item[types.Params]
+	Schema         collections.Schema
+	Params         collections.Item[types.Params]
 }
 
 func NewKeeper(
@@ -43,6 +43,7 @@ func NewKeeper(
 		authority:    authority,
 
 		Params: collections.NewItem(sb, types.ParamsKey, "params", codec.CollValue[types.Params](cdc)),
+
 	}
 
 	schema, err := sb.Build()

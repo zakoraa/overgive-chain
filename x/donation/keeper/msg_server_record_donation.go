@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
 	"overgive-chain/x/donation/types"
@@ -17,6 +18,7 @@ func (k msgServer) RecordDonation(goCtx context.Context, msg *types.MsgRecordDon
 	if _, err := k.addressCodec.StringToBytes(msg.Creator); err != nil {
 		return nil, errorsmod.Wrap(err, "invalid authority address")
 	}
+
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	isAllowed, err := k.permissionsKeeper.IsAllowedWriter(ctx, msg.Creator)
@@ -51,17 +53,28 @@ func (k msgServer) RecordDonation(goCtx context.Context, msg *types.MsgRecordDon
 		)
 	}
 
-	if len(msg.DonationHash) != 64 {
+	sum := sha256.Sum256([]byte(msg.PaymentReferenceId))
+	donationHash := hex.EncodeToString(sum[:])
+
+	if msg.PaymentReferenceId == "" {
 		return nil, errorsmod.Wrap(
 			sdkerrors.ErrInvalidRequest,
-			"donation_hash must be 64 characters",
+			"payment_reference_id required",
 		)
 	}
 
-	if _, err := hex.DecodeString(msg.DonationHash); err != nil {
+	amountDec, err := math.LegacyNewDecFromStr(msg.Amount)
+	if err != nil {
 		return nil, errorsmod.Wrap(
 			sdkerrors.ErrInvalidRequest,
-			"donation_hash must be valid hex",
+			"invalid amount",
+		)
+	}
+
+	if !amountDec.IsPositive() {
+		return nil, errorsmod.Wrap(
+			sdkerrors.ErrInvalidRequest,
+			"amount must be positive",
 		)
 	}
 
@@ -77,7 +90,7 @@ func (k msgServer) RecordDonation(goCtx context.Context, msg *types.MsgRecordDon
 		Amount:             msg.Amount,
 		Currency:           msg.Currency,
 		PaymentReferenceId: msg.PaymentReferenceId,
-		DonationHash:       msg.DonationHash,
+		DonationHash:       donationHash,
 		MetadataHash:       msg.MetadataHash,
 		Creator:            msg.Creator,
 		RecordedAt:         ctx.BlockTime().Unix(),
@@ -97,7 +110,7 @@ func (k msgServer) RecordDonation(goCtx context.Context, msg *types.MsgRecordDon
 			types.EventTypeDonationRecorded,
 			sdk.NewAttribute(types.AttributeKeyDonationID, fmt.Sprintf("%d", id)),
 			sdk.NewAttribute(types.AttributeKeyCampaignID, msg.CampaignId),
-			sdk.NewAttribute(types.AttributeKeyDonationHash, msg.DonationHash),
+			sdk.NewAttribute(types.AttributeKeyDonationHash, donationHash),
 			sdk.NewAttribute(types.AttributeKeyCreator, msg.Creator),
 		),
 	)

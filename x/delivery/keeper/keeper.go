@@ -49,6 +49,7 @@ func NewKeeper(
 		cdc:          cdc,
 		addressCodec: addressCodec,
 		authority:    authority,
+		permissionsKeeper: permissionsKeeper,
 
 		Params: collections.NewItem(sb, deliverytypes.ParamsKey, "params", codec.CollValue[deliverytypes.Params](cdc)),
 

@@ -11,15 +11,16 @@ func (k Keeper) GetParams(ctx sdk.Context) (types.Params, error) {
 }
 
 func (k Keeper) IsAllowedWriter(ctx sdk.Context, addr string) (bool, error) {
-	params, err := k.GetParams(ctx)
-	if err != nil {
-		return false, err
-	}
+    params, err := k.Params.Get(ctx)
+    if err != nil {
+        return false, err
+    }
 
-	for _, writer := range params.AllowedWriters {
-		if writer == addr {
-			return true, nil
-		}
-	}
-	return false, nil
+    for _, allowed := range params.AllowedWriters {
+        if allowed == addr {
+            return true, nil
+        }
+    }
+
+    return false, nil
 }

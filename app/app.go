@@ -3,6 +3,33 @@
 // ignite generate proto-go => generate proto
 // ignite chain build => compile to executable binary
 // ignite chain serve => run local
+// ignite chain serve --reset-once => run local
+/*
+overgive-chaind tx donation record-donation   campaign4   750000   IDR   PAY4   
+a3f5c9e7d2b14f6c8a9e0b1d2c3f4a5e6d7c8b9a0e1f2d3c4b5a6f7e8d9c0b3   META3   --from overgive-admin   --fees 2000stake   --no
+de tcp://localhost:26657   --chain-id overgivechain   --home ~/.overgive-chain   --yes
+*/
+// overgive-chaind query donation donations
+/*
+ overgive-chaind query tx 422596766C5CAF5CF4AE478AC98205BF5A350BD0EDDA2DE574D983076945471E --node tcp://localhost:26657   --home ~/.overgive-chain
+*/
+
+// overgive-chaind keys show overgive-admin -a
+
+// overgive-chaind query auth module-account gov
+
+/* 
+overgive-chaind tx gov submit-proposal proposal.json \
+--from overgive-admin \
+--fees 2000stake \
+--yes
+*/
+
+/* 
+overgive-chaind tx gov vote 1 yes \
+  --from overgive-admin \
+  --yes
+*/
 
 package app
 

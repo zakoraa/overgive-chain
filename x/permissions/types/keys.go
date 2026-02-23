@@ -16,4 +16,7 @@ const (
 )
 
 // ParamsKey is the prefix to retrieve all Params
-var ParamsKey = collections.NewPrefix("p_permissions")
+var (
+	ParamsKey               = collections.NewPrefix(0)
+	AllowedWritersKeyPrefix = collections.NewPrefix(1)
+)

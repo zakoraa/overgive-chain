@@ -13,7 +13,7 @@ option go_package = "overgive-chain/x/permissions/types";
 service Query {
   // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
-    option (google.api.http).get = "/overgive-chain/permissions/v1/params";
+    option (google.api.http).get = "/overgivechain/permissions/v1/params";
   }
 }
 

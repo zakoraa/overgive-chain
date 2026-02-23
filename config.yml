@@ -11,6 +11,10 @@ accounts:
   coins:
   - 10000token
   - 100000000stake
+- name: overgive-admin
+  coins:
+  - 10000token
+  - 100000000stake
 client:
   openapi:
     path: docs/static/openapi.json
@@ -22,7 +26,8 @@ faucet:
 validators:
 - name: alice
   bonded: 100000000stake
-- name: validator1
+- name: overgive-admin
   bonded: 200000000stake
 - name: validator2
   bonded: 100000000stake
+  # overgive12vwwxw9zjhkt4gdsmmfskn7vmv9g6hgtnlxjcn
