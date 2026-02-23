@@ -9,6 +9,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 
 	"overgive-chain/x/permissions/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 type Keeper struct {
@@ -17,17 +19,17 @@ type Keeper struct {
 	addressCodec address.Codec
 	// Address capable of executing a MsgUpdateParams message.
 	// Typically, this should be the x/gov module account.
-	authority []byte
+	authority sdk.AccAddress
 
-	Schema         collections.Schema
-	Params         collections.Item[types.Params]
+	Schema collections.Schema
+	Params collections.Item[types.Params]
 }
 
 func NewKeeper(
 	storeService corestore.KVStoreService,
 	cdc codec.Codec,
 	addressCodec address.Codec,
-	authority []byte,
+	authority sdk.AccAddress,
 
 ) Keeper {
 	if _, err := addressCodec.BytesToString(authority); err != nil {
@@ -43,7 +45,6 @@ func NewKeeper(
 		authority:    authority,
 
 		Params: collections.NewItem(sb, types.ParamsKey, "params", codec.CollValue[types.Params](cdc)),
-
 	}
 
 	schema, err := sb.Build()

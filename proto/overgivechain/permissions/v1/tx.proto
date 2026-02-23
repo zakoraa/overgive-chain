@@ -20,6 +20,9 @@ service Msg {
 
   // UpdatePermissions defines the UpdatePermissions RPC.
   rpc UpdatePermissions(MsgUpdatePermissions) returns (MsgUpdatePermissionsResponse);
+  
+  // AddWriter defines the AddWriter RPC. DEV PURPOSE
+  rpc AddWriter(MsgAddWriter) returns (MsgAddWriterResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -51,3 +54,12 @@ message MsgUpdatePermissions {
 
 // MsgUpdatePermissionsResponse defines the MsgUpdatePermissionsResponse message.
 message MsgUpdatePermissionsResponse {}
+
+message MsgAddWriter {
+  option (cosmos.msg.v1.signer) = "authority";
+
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string writer    = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+}
+
+message MsgAddWriterResponse {}
