@@ -20,16 +20,18 @@ func (k msgServer) RecordDonation(goCtx context.Context, msg *types.MsgRecordDon
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	creatorAddr, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, sdkerrors.ErrInvalidAddress
+	}
 
-	isAllowed, err := k.permissionsKeeper.IsAllowedWriter(ctx, msg.Creator)
+	allowed, err := k.permissionsKeeper.IsAllowedWriter(ctx, creatorAddr)
 	if err != nil {
 		return nil, err
 	}
-	if !isAllowed {
-		return nil, errorsmod.Wrap(
-			sdkerrors.ErrUnauthorized,
-			"not allowed writer",
-		)
+
+	if !allowed {
+		return nil, sdkerrors.ErrUnauthorized.Wrap("not allowed writer")
 	}
 
 	if msg.CampaignId == "" {

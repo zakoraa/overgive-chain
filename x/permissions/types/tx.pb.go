@@ -206,11 +206,109 @@ func (m *MsgUpdatePermissionsResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgUpdatePermissionsResponse proto.InternalMessageInfo
 
+type MsgUpdateAllowedWriter struct {
+	Authority string `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
+	Address   string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
+	Add       bool   `protobuf:"varint,3,opt,name=add,proto3" json:"add,omitempty"`
+}
+
+func (m *MsgUpdateAllowedWriter) Reset()         { *m = MsgUpdateAllowedWriter{} }
+func (m *MsgUpdateAllowedWriter) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateAllowedWriter) ProtoMessage()    {}
+func (*MsgUpdateAllowedWriter) Descriptor() ([]byte, []int) {
+	return fileDescriptor_0a849ac3ac02998f, []int{4}
+}
+func (m *MsgUpdateAllowedWriter) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateAllowedWriter) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateAllowedWriter.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateAllowedWriter) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateAllowedWriter.Merge(m, src)
+}
+func (m *MsgUpdateAllowedWriter) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateAllowedWriter) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateAllowedWriter.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateAllowedWriter proto.InternalMessageInfo
+
+func (m *MsgUpdateAllowedWriter) GetAuthority() string {
+	if m != nil {
+		return m.Authority
+	}
+	return ""
+}
+
+func (m *MsgUpdateAllowedWriter) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+func (m *MsgUpdateAllowedWriter) GetAdd() bool {
+	if m != nil {
+		return m.Add
+	}
+	return false
+}
+
+type MsgUpdateAllowedWriterResponse struct {
+}
+
+func (m *MsgUpdateAllowedWriterResponse) Reset()         { *m = MsgUpdateAllowedWriterResponse{} }
+func (m *MsgUpdateAllowedWriterResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateAllowedWriterResponse) ProtoMessage()    {}
+func (*MsgUpdateAllowedWriterResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_0a849ac3ac02998f, []int{5}
+}
+func (m *MsgUpdateAllowedWriterResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateAllowedWriterResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateAllowedWriterResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateAllowedWriterResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateAllowedWriterResponse.Merge(m, src)
+}
+func (m *MsgUpdateAllowedWriterResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateAllowedWriterResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateAllowedWriterResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateAllowedWriterResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgUpdateParams)(nil), "overgivechain.permissions.v1.MsgUpdateParams")
 	proto.RegisterType((*MsgUpdateParamsResponse)(nil), "overgivechain.permissions.v1.MsgUpdateParamsResponse")
 	proto.RegisterType((*MsgUpdatePermissions)(nil), "overgivechain.permissions.v1.MsgUpdatePermissions")
 	proto.RegisterType((*MsgUpdatePermissionsResponse)(nil), "overgivechain.permissions.v1.MsgUpdatePermissionsResponse")
+	proto.RegisterType((*MsgUpdateAllowedWriter)(nil), "overgivechain.permissions.v1.MsgUpdateAllowedWriter")
+	proto.RegisterType((*MsgUpdateAllowedWriterResponse)(nil), "overgivechain.permissions.v1.MsgUpdateAllowedWriterResponse")
 }
 
 func init() {
@@ -218,7 +316,7 @@ func init() {
 }
 
 var fileDescriptor_0a849ac3ac02998f = []byte{
-	// 402 bytes of a gzipped FileDescriptorProto
+	// 485 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x52, 0xcd, 0x2f, 0x4b, 0x2d,
 	0x4a, 0xcf, 0x2c, 0x4b, 0x4d, 0xce, 0x48, 0xcc, 0xcc, 0xd3, 0x2f, 0x48, 0x2d, 0xca, 0xcd, 0x2c,
 	0x2e, 0xce, 0xcc, 0xcf, 0x2b, 0xd6, 0x2f, 0x33, 0xd4, 0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f,
@@ -237,14 +335,19 @@ var fileDescriptor_0a849ac3ac02998f = []byte{
 	0x49, 0x72, 0x89, 0xa3, 0x09, 0x05, 0xa5, 0x16, 0x17, 0xe4, 0xe7, 0x15, 0xa7, 0x2a, 0x45, 0x70,
 	0x89, 0x20, 0xa4, 0x10, 0x46, 0x08, 0x19, 0x71, 0xb1, 0x27, 0x17, 0xa5, 0x26, 0x96, 0xe4, 0x17,
 	0x11, 0xf4, 0x31, 0x4c, 0xa1, 0x15, 0x0f, 0xc8, 0x99, 0x30, 0x9e, 0x92, 0x1c, 0x97, 0x0c, 0x36,
-	0x93, 0x61, 0x36, 0x1b, 0x75, 0x30, 0x71, 0x31, 0xfb, 0x16, 0xa7, 0x0b, 0x95, 0x70, 0xf1, 0xa0,
-	0x84, 0xb6, 0x2e, 0xfe, 0x50, 0x42, 0xf3, 0x88, 0x94, 0x29, 0x49, 0xca, 0x61, 0xb6, 0x0b, 0x35,
-	0x33, 0x72, 0x09, 0x62, 0xf1, 0x35, 0xb1, 0x86, 0x21, 0xc4, 0xa5, 0xac, 0x48, 0xd7, 0x03, 0x73,
-	0x85, 0x14, 0x6b, 0x03, 0x28, 0x9e, 0x9d, 0x6c, 0x4e, 0x3c, 0x92, 0x63, 0xbc, 0xf0, 0x48, 0x8e,
-	0xf1, 0xc1, 0x23, 0x39, 0xc6, 0x09, 0x8f, 0xe5, 0x18, 0x2e, 0x3c, 0x96, 0x63, 0xb8, 0xf1, 0x58,
-	0x8e, 0x21, 0x4a, 0x09, 0x66, 0xb6, 0x2e, 0xb6, 0x78, 0x2e, 0xa9, 0x2c, 0x48, 0x2d, 0x4e, 0x62,
-	0x03, 0xa7, 0x5c, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0xd6, 0x3d, 0xbe, 0x7b, 0x88, 0x03,
-	0x00, 0x00,
+	0x93, 0xe1, 0x36, 0x2f, 0x63, 0xe4, 0x12, 0x83, 0x2b, 0x70, 0xcc, 0xc9, 0xc9, 0x2f, 0x4f, 0x4d,
+	0x09, 0x2f, 0xca, 0x2c, 0x49, 0x2d, 0x22, 0x3b, 0xc0, 0x8d, 0xb8, 0xd8, 0x13, 0x21, 0x72, 0xe0,
+	0x10, 0xc7, 0xeb, 0x68, 0xa8, 0x42, 0x21, 0x01, 0x2e, 0xe6, 0xc4, 0x94, 0x14, 0x09, 0x66, 0x05,
+	0x46, 0x0d, 0x8e, 0x20, 0x10, 0xd3, 0x8a, 0x0f, 0x35, 0xb4, 0x95, 0x14, 0xb8, 0xe4, 0xb0, 0xbb,
+	0x13, 0xe6, 0x15, 0xa3, 0x29, 0xcc, 0x5c, 0xcc, 0xbe, 0xc5, 0xe9, 0x42, 0x25, 0x5c, 0x3c, 0x28,
+	0x09, 0x47, 0x17, 0x7f, 0x84, 0xa3, 0xc5, 0x89, 0x94, 0x29, 0x49, 0xca, 0x61, 0xb6, 0x0b, 0x35,
+	0x33, 0x72, 0x09, 0x62, 0x89, 0x40, 0x62, 0x0d, 0x43, 0x88, 0x4b, 0x59, 0x91, 0xae, 0x07, 0xee,
+	0x8a, 0x4e, 0x46, 0x2e, 0x61, 0x6c, 0x71, 0x69, 0x42, 0xa4, 0x99, 0x28, 0xba, 0xa4, 0x6c, 0xc8,
+	0xd1, 0x05, 0x73, 0x8b, 0x14, 0x6b, 0x03, 0x28, 0xfb, 0x38, 0xd9, 0x9c, 0x78, 0x24, 0xc7, 0x78,
+	0xe1, 0x91, 0x1c, 0xe3, 0x83, 0x47, 0x72, 0x8c, 0x13, 0x1e, 0xcb, 0x31, 0x5c, 0x78, 0x2c, 0xc7,
+	0x70, 0xe3, 0xb1, 0x1c, 0x43, 0x94, 0x12, 0xcc, 0x74, 0x5d, 0x6c, 0xd9, 0xa7, 0xa4, 0xb2, 0x20,
+	0xb5, 0x38, 0x89, 0x0d, 0x5c, 0x20, 0x18, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0xee, 0x3d, 0xde,
+	0x48, 0xdf, 0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -264,6 +367,8 @@ type MsgClient interface {
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
 	// UpdatePermissions defines the UpdatePermissions RPC.
 	UpdatePermissions(ctx context.Context, in *MsgUpdatePermissions, opts ...grpc.CallOption) (*MsgUpdatePermissionsResponse, error)
+	// UpdateAllowedWriter defines the UpdateAllowedWriter RPC.
+	UpdateAllowedWriter(ctx context.Context, in *MsgUpdateAllowedWriter, opts ...grpc.CallOption) (*MsgUpdateAllowedWriterResponse, error)
 }
 
 type msgClient struct {
@@ -292,6 +397,15 @@ func (c *msgClient) UpdatePermissions(ctx context.Context, in *MsgUpdatePermissi
 	return out, nil
 }
 
+func (c *msgClient) UpdateAllowedWriter(ctx context.Context, in *MsgUpdateAllowedWriter, opts ...grpc.CallOption) (*MsgUpdateAllowedWriterResponse, error) {
+	out := new(MsgUpdateAllowedWriterResponse)
+	err := c.cc.Invoke(ctx, "/overgivechain.permissions.v1.Msg/UpdateAllowedWriter", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	// UpdateParams defines a (governance) operation for updating the module
@@ -299,6 +413,8 @@ type MsgServer interface {
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
 	// UpdatePermissions defines the UpdatePermissions RPC.
 	UpdatePermissions(context.Context, *MsgUpdatePermissions) (*MsgUpdatePermissionsResponse, error)
+	// UpdateAllowedWriter defines the UpdateAllowedWriter RPC.
+	UpdateAllowedWriter(context.Context, *MsgUpdateAllowedWriter) (*MsgUpdateAllowedWriterResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -310,6 +426,9 @@ func (*UnimplementedMsgServer) UpdateParams(ctx context.Context, req *MsgUpdateP
 }
 func (*UnimplementedMsgServer) UpdatePermissions(ctx context.Context, req *MsgUpdatePermissions) (*MsgUpdatePermissionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePermissions not implemented")
+}
+func (*UnimplementedMsgServer) UpdateAllowedWriter(ctx context.Context, req *MsgUpdateAllowedWriter) (*MsgUpdateAllowedWriterResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAllowedWriter not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -352,6 +471,24 @@ func _Msg_UpdatePermissions_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_UpdateAllowedWriter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateAllowedWriter)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UpdateAllowedWriter(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/overgivechain.permissions.v1.Msg/UpdateAllowedWriter",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UpdateAllowedWriter(ctx, req.(*MsgUpdateAllowedWriter))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var Msg_serviceDesc = _Msg_serviceDesc
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "overgivechain.permissions.v1.Msg",
@@ -364,6 +501,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdatePermissions",
 			Handler:    _Msg_UpdatePermissions_Handler,
+		},
+		{
+			MethodName: "UpdateAllowedWriter",
+			Handler:    _Msg_UpdateAllowedWriter_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -486,6 +627,76 @@ func (m *MsgUpdatePermissionsResponse) MarshalToSizedBuffer(dAtA []byte) (int, e
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgUpdateAllowedWriter) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateAllowedWriter) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateAllowedWriter) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Add {
+		i--
+		if m.Add {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Address)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Authority) > 0 {
+		i -= len(m.Authority)
+		copy(dAtA[i:], m.Authority)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Authority)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgUpdateAllowedWriterResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateAllowedWriterResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateAllowedWriterResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -535,6 +746,35 @@ func (m *MsgUpdatePermissions) Size() (n int) {
 }
 
 func (m *MsgUpdatePermissionsResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgUpdateAllowedWriter) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Authority)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Address)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.Add {
+		n += 2
+	}
+	return n
+}
+
+func (m *MsgUpdateAllowedWriterResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -823,6 +1063,190 @@ func (m *MsgUpdatePermissionsResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgUpdatePermissionsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgUpdateAllowedWriter) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateAllowedWriter: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateAllowedWriter: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Authority", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Authority = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Address = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Add", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.Add = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgUpdateAllowedWriterResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateAllowedWriterResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateAllowedWriterResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

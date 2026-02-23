@@ -13,9 +13,19 @@ de tcp://localhost:26657   --chain-id overgivechain   --home ~/.overgive-chain  
 /*
  overgive-chaind query tx 422596766C5CAF5CF4AE478AC98205BF5A350BD0EDDA2DE574D983076945471E --node tcp://localhost:26657   --home ~/.overgive-chain
 */
+/*
+overgive-chaind tx permissions update-allowed-writer \
+  --address overgive1gncccpp3mgxqag79jsc6yksmzqyq8g4ylktn0g \
+  --add \
+  --from overgive-admin \
+  --fees 2000stake \
+  --yes
+  */
 
+// CHECK ADDRESS
 // overgive-chaind keys show overgive-admin -a
 
+// GOVERNANCE
 // overgive-chaind query auth module-account gov
 
 /* 

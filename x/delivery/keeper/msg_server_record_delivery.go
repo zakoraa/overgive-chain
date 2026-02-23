@@ -23,17 +23,6 @@ func (k msgServer) RecordDelivery(
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	isAllowed, err := k.permissionsKeeper.IsAllowedWriter(ctx, msg.Creator)
-	if err != nil {
-		return nil, err
-	}
-	if !isAllowed {
-		return nil, errorsmod.Wrap(
-			sdkerrors.ErrUnauthorized,
-			"not allowed writer",
-		)
-	}
-
 	if msg.CampaignId == "" {
 		return nil, errorsmod.Wrap(
 			sdkerrors.ErrInvalidRequest,

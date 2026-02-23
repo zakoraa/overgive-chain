@@ -11,7 +11,7 @@ import (
 
 	"overgive-chain/x/donation/keeper"
 	"overgive-chain/x/donation/types"
-	permissionskeeper "overgive-chain/x/permissions/keeper"
+	permissiontypes "overgive-chain/x/permissions/types"
 )
 
 var _ depinject.OnePerModuleType = AppModule{}
@@ -37,7 +37,7 @@ type ModuleInputs struct {
 	AuthKeeper types.AuthKeeper
 	BankKeeper types.BankKeeper
 
-	PermissionsKeeper permissionskeeper.Keeper
+	PermissionsKeeper permissiontypes.PermissionsKeeper
 }
 
 type ModuleOutputs struct {

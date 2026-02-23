@@ -7,9 +7,7 @@ func NewParams() Params {
 
 // DefaultParams returns a default set of parameters.
 func DefaultParams() Params {
-	return Params{
-		AllowedWriters: []string{},
-	}
+	return Params{}
 }
 
 // Validate validates the set of params.

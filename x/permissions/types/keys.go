@@ -20,3 +20,7 @@ var (
 	ParamsKey               = collections.NewPrefix(0)
 	AllowedWritersKeyPrefix = collections.NewPrefix(1)
 )
+
+func AllowedWriterKey(addr []byte) []byte {
+	return append(AllowedWritersKeyPrefix, addr...)
+}

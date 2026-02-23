@@ -11,7 +11,6 @@ import (
 
 	"overgive-chain/x/delivery/keeper"
 	"overgive-chain/x/delivery/types"
-	permissionskeeper "overgive-chain/x/permissions/keeper"
 
 )
 
@@ -38,7 +37,6 @@ type ModuleInputs struct {
 	AuthKeeper types.AuthKeeper
 	BankKeeper types.BankKeeper
 
-	PermissionsKeeper permissionskeeper.Keeper
 }
 
 type ModuleOutputs struct {
@@ -59,7 +57,6 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.Cdc,
 		in.AddressCodec,
 		authority,
-		in.PermissionsKeeper,
 	)
 	m := NewAppModule(in.Cdc, k, in.AuthKeeper, in.BankKeeper)
 

@@ -7,10 +7,11 @@ import (
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/depinject/appconfig"
 	"github.com/cosmos/cosmos-sdk/codec"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"overgive-chain/x/permissions/keeper"
 	"overgive-chain/x/permissions/types"
+
 )
 
 var _ depinject.OnePerModuleType = AppModule{}
@@ -46,10 +47,16 @@ type ModuleOutputs struct {
 
 func ProvideModule(in ModuleInputs) ModuleOutputs {
 	// default to governance authority if not provided
-	authority := authtypes.NewModuleAddress(types.GovModuleName)
-	if in.Config.Authority != "" {
-		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
-	}
+	// authority := authtypes.NewModuleAddress(types.GovModuleName)
+	// if in.Config.Authority != "" {
+	// 	authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
+	// }
+	 authorityStr := "overgive1gncccpp3mgxqag79jsc6yksmzqyq8g4ylktn0g" // address overgive-admin
+
+    authority, err := sdk.AccAddressFromBech32(authorityStr)
+    if err != nil {
+        panic(err)
+    }
 	k := keeper.NewKeeper(
 		in.StoreService,
 		in.Cdc,

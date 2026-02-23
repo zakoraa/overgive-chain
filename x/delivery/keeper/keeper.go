@@ -9,7 +9,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 
 	deliverytypes "overgive-chain/x/delivery/types"
-	permissionstypes "overgive-chain/x/permissions/types"
 )
 
 type Keeper struct {
@@ -23,7 +22,6 @@ type Keeper struct {
 	Schema collections.Schema
 	Params collections.Item[deliverytypes.Params]
 
-	permissionsKeeper permissionstypes.PermissionsKeeper
 
 	Deliveries       collections.Map[uint64, deliverytypes.Delivery]
 	DeliverySeq      collections.Sequence
@@ -35,7 +33,6 @@ func NewKeeper(
 	cdc codec.Codec,
 	addressCodec address.Codec,
 	authority []byte,
-	permissionsKeeper permissionstypes.PermissionsKeeper,
 
 ) Keeper {
 	if _, err := addressCodec.BytesToString(authority); err != nil {
@@ -49,7 +46,6 @@ func NewKeeper(
 		cdc:          cdc,
 		addressCodec: addressCodec,
 		authority:    authority,
-		permissionsKeeper: permissionsKeeper,
 
 		Params: collections.NewItem(sb, deliverytypes.ParamsKey, "params", codec.CollValue[deliverytypes.Params](cdc)),
 
