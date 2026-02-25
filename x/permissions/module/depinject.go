@@ -51,6 +51,9 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 	// 	authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
 	// }
 
+	// fix this, dont hardcode
+	// instead, i must make a MSG to store the wallets
+	// and then read them for validation
 	authorityStr := "overgive19qxzxfpttj8un5qzg8qtna7rlhm63an46tc2rz" // address overgive-admin
 
 	authority, err := sdk.AccAddressFromBech32(authorityStr)

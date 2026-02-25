@@ -5,9 +5,9 @@
 // ignite chain serve => run local
 // ignite chain serve --reset-once => run local
 /*
-overgive-chaind tx donation record-donation   campaign4   750000   IDR   PAY4   
-a3f5c9e7d2b14f6c8a9e0b1d2c3f4a5e6d7c8b9a0e1f2d3c4b5a6f7e8d9c0b3   META3   --from overgive-admin   --fees 2000stake   --no
-de tcp://localhost:26657   --chain-id overgivechain   --home ~/.overgive-chain   --yes
+overgive-chaind tx donation record-donation   campaign4   750000   IDR   PAY4   \
+a3f5c9e7d2b14f6c8a9e0b1d2c3f4a5e6d7c8b9a0e1f2d3c4b5a6f7e8d9c0b3   META3   --from overgive-admin   --fees 2000stake   --node \
+tcp://localhost:26657   --chain-id overgivechain   --home ~/.overgive-chain   --yes 
 */
 // overgive-chaind query donation donations
 /*
