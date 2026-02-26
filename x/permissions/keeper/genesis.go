@@ -9,7 +9,7 @@ import (
 // InitGenesis initializes the module's state from a provided genesis state.
 func (k Keeper) InitGenesis(ctx context.Context, genState types.GenesisState) error {
 	for _, elem := range genState.AllowedMap {
-		if err := k.Allowed.Set(ctx, elem.Index, elem); err != nil {
+		if err := k.Allowed.Set(ctx, elem.Address, elem); err != nil {
 			return err
 		}
 	}

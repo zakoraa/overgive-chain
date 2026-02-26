@@ -5,7 +5,5 @@ option go_package = "overgive-chain/x/permissions/types";
 
 // Allowed defines the Allowed message.
 message Allowed {
-  string index = 1;
-  string address = 2;
-  string creator = 3;
+  string address = 1;
 }

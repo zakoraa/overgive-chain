@@ -17,9 +17,7 @@ import (
 func createNAllowed(keeper keeper.Keeper, ctx context.Context, n int) []types.Allowed {
 	items := make([]types.Allowed, n)
 	for i := range items {
-		items[i].Index = strconv.Itoa(i)
 		items[i].Address = strconv.Itoa(i)
-		_ = keeper.Allowed.Set(ctx, items[i].Index, items[i])
 	}
 	return items
 }
@@ -37,21 +35,21 @@ func TestAllowedQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetAllowedRequest{
-				Index: msgs[0].Index,
+				Address: msgs[0].Address,
 			},
 			response: &types.QueryGetAllowedResponse{Allowed: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetAllowedRequest{
-				Index: msgs[1].Index,
+				Address: msgs[1].Address,
 			},
 			response: &types.QueryGetAllowedResponse{Allowed: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.QueryGetAllowedRequest{
-				Index: strconv.Itoa(100000),
+				Address: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.NotFound, "not found"),
 		},

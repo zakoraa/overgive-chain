@@ -21,17 +21,17 @@ func TestGenesisState_Validate(t *testing.T) {
 		},
 		{
 			desc:     "valid genesis state",
-			genState: &types.GenesisState{AllowedMap: []types.Allowed{{Index: "0"}, {Index: "1"}}},
+			genState: &types.GenesisState{AllowedMap: []types.Allowed{{Address: "0"}, {Address: "1"}}},
 			valid:    true,
 		}, {
 			desc: "duplicated allowed",
 			genState: &types.GenesisState{
 				AllowedMap: []types.Allowed{
 					{
-						Index: "0",
+						Address: "0",
 					},
 					{
-						Index: "0",
+						Address: "0",
 					},
 				},
 			},

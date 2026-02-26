@@ -12,14 +12,14 @@ func DefaultGenesis() *GenesisState {
 // Validate performs basic genesis state validation returning an error upon any
 // failure.
 func (gs GenesisState) Validate() error {
-	allowedIndexMap := make(map[string]struct{})
+	allowedAddressMap := make(map[string]struct{})
 
 	for _, elem := range gs.AllowedMap {
-		index := fmt.Sprint(elem.Index)
-		if _, ok := allowedIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for allowed")
+		address := fmt.Sprint(elem.Address)
+		if _, ok := allowedAddressMap[address]; ok {
+			return fmt.Errorf("duplicated Address for allowed")
 		}
-		allowedIndexMap[index] = struct{}{}
+		allowedAddressMap[address] = struct{}{}
 	}
 
 	return gs.Params.Validate()

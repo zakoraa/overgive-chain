@@ -11,7 +11,7 @@ import (
 func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params:     types.DefaultParams(),
-		AllowedMap: []types.Allowed{{Index: "0"}, {Index: "1"}}}
+		AllowedMap: []types.Allowed{{Address: "0"}, {Address: "1"}}}
 
 	f := initFixture(t)
 	err := f.keeper.InitGenesis(f.ctx, genesisState)

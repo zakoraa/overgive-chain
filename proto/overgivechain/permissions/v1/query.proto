@@ -20,7 +20,7 @@ service Query {
 
   // ListAllowed Queries a list of Allowed items.
   rpc GetAllowed(QueryGetAllowedRequest) returns (QueryGetAllowedResponse) {
-    option (google.api.http).get = "/overgive-chain/permissions/v1/allowed/{index}";
+    option (google.api.http).get = "/overgive-chain/permissions/v1/allowed/{address}";
   }
 
   // ListAllowed defines the ListAllowed RPC.
@@ -43,7 +43,7 @@ message QueryParamsResponse {
 
 // QueryGetAllowedRequest defines the QueryGetAllowedRequest message.
 message QueryGetAllowedRequest {
-  string index = 1;
+  string address = 1;
 }
 
 // QueryGetAllowedResponse defines the QueryGetAllowedResponse message.

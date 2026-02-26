@@ -12,5 +12,4 @@ var (
 	ErrUnauthorized  = errors.Register(ModuleName, 1101, "unauthorized")
 	ErrNotFound     = errors.Register(ModuleName, 1102, "not found")
 	ErrAlreadyExists = errors.Register(ModuleName, 1103, "already exists")
-	ErrInvalidIndex  = errors.Register(ModuleName, 1104, "index must equal address")
 )

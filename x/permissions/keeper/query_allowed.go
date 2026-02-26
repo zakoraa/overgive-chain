@@ -37,7 +37,7 @@ func (q queryServer) GetAllowed(ctx context.Context, req *types.QueryGetAllowedR
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	val, err := q.k.Allowed.Get(ctx, req.Index)
+	val, err := q.k.Allowed.Get(ctx, req.Address)
 	if err != nil {
 		if errors.Is(err, collections.ErrNotFound) {
 			return nil, status.Error(codes.NotFound, "not found")

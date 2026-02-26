@@ -29,7 +29,14 @@ func (k msgServer) RecordDonation(
 		)
 	}
 
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
 	isAllowed, err := k.permissionsKeeper.HasAllowed(goCtx, msg.Creator)
+	ctx.Logger().Info("HasAllowed result",
+		"creator", msg.Creator,
+		"isAllowed", isAllowed,
+		"err", err,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -98,8 +105,6 @@ func (k msgServer) RecordDonation(
 			"donation_hash already exists",
 		)
 	}
-
-	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	donation := types.Donation{
 		CampaignId:         msg.CampaignId,

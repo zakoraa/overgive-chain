@@ -19,13 +19,10 @@ func TestAllowedMsgServerCreate(t *testing.T) {
 
 	for i := 0; i < 5; i++ {
 		expected := &types.MsgCreateAllowed{Creator: creator,
-			Index: strconv.Itoa(i),
+			Address: strconv.Itoa(i),
 		}
 		_, err := srv.CreateAllowed(f.ctx, expected)
 		require.NoError(t, err)
-		rst, err := f.keeper.Allowed.Get(f.ctx, expected.Index)
-		require.NoError(t, err)
-		require.Equal(t, expected.Creator, rst.Creator)
 	}
 }
 
@@ -40,7 +37,7 @@ func TestAllowedMsgServerUpdate(t *testing.T) {
 	require.NoError(t, err)
 
 	expected := &types.MsgCreateAllowed{Creator: creator,
-		Index: strconv.Itoa(0),
+		Address: strconv.Itoa(0),
 	}
 	_, err = srv.CreateAllowed(f.ctx, expected)
 	require.NoError(t, err)
@@ -53,28 +50,28 @@ func TestAllowedMsgServerUpdate(t *testing.T) {
 		{
 			desc: "invalid address",
 			request: &types.MsgUpdateAllowed{Creator: "invalid",
-				Index: strconv.Itoa(0),
+				Address: strconv.Itoa(0),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		},
 		{
 			desc: "unauthorized",
 			request: &types.MsgUpdateAllowed{Creator: unauthorizedAddr,
-				Index: strconv.Itoa(0),
+				Address: strconv.Itoa(0),
 			},
 			err: sdkerrors.ErrUnauthorized,
 		},
 		{
 			desc: "key not found",
 			request: &types.MsgUpdateAllowed{Creator: creator,
-				Index: strconv.Itoa(100000),
+				Address: strconv.Itoa(100000),
 			},
 			err: sdkerrors.ErrKeyNotFound,
 		},
 		{
 			desc: "completed",
 			request: &types.MsgUpdateAllowed{Creator: creator,
-				Index: strconv.Itoa(0),
+				Address: strconv.Itoa(0),
 			},
 		},
 	}
@@ -85,9 +82,6 @@ func TestAllowedMsgServerUpdate(t *testing.T) {
 				require.ErrorIs(t, err, tc.err)
 			} else {
 				require.NoError(t, err)
-				rst, err := f.keeper.Allowed.Get(f.ctx, expected.Index)
-				require.NoError(t, err)
-				require.Equal(t, expected.Creator, rst.Creator)
 			}
 		})
 	}
@@ -104,7 +98,7 @@ func TestAllowedMsgServerDelete(t *testing.T) {
 	require.NoError(t, err)
 
 	_, err = srv.CreateAllowed(f.ctx, &types.MsgCreateAllowed{Creator: creator,
-		Index: strconv.Itoa(0),
+		Address: strconv.Itoa(0),
 	})
 	require.NoError(t, err)
 
@@ -116,28 +110,28 @@ func TestAllowedMsgServerDelete(t *testing.T) {
 		{
 			desc: "invalid address",
 			request: &types.MsgDeleteAllowed{Creator: "invalid",
-				Index: strconv.Itoa(0),
+				Address: strconv.Itoa(0),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		},
 		{
 			desc: "unauthorized",
 			request: &types.MsgDeleteAllowed{Creator: unauthorizedAddr,
-				Index: strconv.Itoa(0),
+				Address: strconv.Itoa(0),
 			},
 			err: sdkerrors.ErrUnauthorized,
 		},
 		{
 			desc: "key not found",
 			request: &types.MsgDeleteAllowed{Creator: creator,
-				Index: strconv.Itoa(100000),
+				Address: strconv.Itoa(100000),
 			},
 			err: sdkerrors.ErrKeyNotFound,
 		},
 		{
 			desc: "completed",
 			request: &types.MsgDeleteAllowed{Creator: creator,
-				Index: strconv.Itoa(0),
+				Address: strconv.Itoa(0),
 			},
 		},
 	}
@@ -148,7 +142,7 @@ func TestAllowedMsgServerDelete(t *testing.T) {
 				require.ErrorIs(t, err, tc.err)
 			} else {
 				require.NoError(t, err)
-				found, err := f.keeper.Allowed.Has(f.ctx, tc.request.Index)
+				found, err := f.keeper.Allowed.Has(f.ctx, tc.request.Address)
 				require.NoError(t, err)
 				require.False(t, found)
 			}

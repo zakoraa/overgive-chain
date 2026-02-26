@@ -34,13 +34,8 @@ func (k msgServer) CreateAllowed(
 		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, "invalid target address")
 	}
 
-	// Enforce index = address (whitelist design)
-	if msg.Index != msg.Address {
-		return nil, types.ErrInvalidIndex
-	}
-
 	// Check if already exists
-	exists, err := k.Allowed.Has(ctx, msg.Index)
+	exists, err := k.Allowed.Has(ctx, msg.Address)
 	if err != nil {
 		return nil, err
 	}
@@ -49,12 +44,10 @@ func (k msgServer) CreateAllowed(
 	}
 
 	allowed := types.Allowed{
-		Creator: msg.Creator,
-		Index:   msg.Index,
 		Address: msg.Address,
 	}
 
-	if err := k.Allowed.Set(ctx, msg.Index, allowed); err != nil {
+	if err := k.Allowed.Set(ctx, msg.Address, allowed); err != nil {
 		return nil, err
 	}
 
@@ -92,7 +85,7 @@ func (k msgServer) DeleteAllowed(
 	// }
 
 	// Check if exists
-	exists, err := k.Allowed.Has(ctx, msg.Index)
+	exists, err := k.Allowed.Has(ctx, msg.Address)
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +93,7 @@ func (k msgServer) DeleteAllowed(
 		return nil, types.ErrNotFound
 	}
 
-	if err := k.Allowed.Remove(ctx, msg.Index); err != nil {
+	if err := k.Allowed.Remove(ctx, msg.Address); err != nil {
 		return nil, err
 	}
 

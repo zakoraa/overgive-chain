@@ -7,7 +7,6 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 
-	"overgive-chain/testutil/sample"
 	permissionssimulation "overgive-chain/x/permissions/simulation"
 	"overgive-chain/x/permissions/types"
 )
@@ -20,10 +19,10 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	permissionsGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
-		AllowedMap: []types.Allowed{{Creator: sample.AccAddress(),
-			Index: "0",
-		}, {Creator: sample.AccAddress(),
-			Index: "1",
+		AllowedMap: []types.Allowed{{
+			Address: "0",
+		}, {
+			Address: "1",
 		}}}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&permissionsGenesis)
 }

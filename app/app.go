@@ -14,12 +14,10 @@ tcp://localhost:26657   --chain-id overgivechain   --home ~/.overgive-chain   --
  overgive-chaind query tx 422596766C5CAF5CF4AE478AC98205BF5A350BD0EDDA2DE574D983076945471E --node tcp://localhost:26657   --home ~/.overgive-chain
 */
 /*
-overgive-chaind tx permissions add-writer \
-  --writer overgive19qxzxfpttj8un5qzg8qtna7rlhm63an46tc2rz \
-  --from overgive-admin \
-  --chain-id overgivechain \
-  --gas auto \
-  -y
+overgive-chaind tx permissions create-allowed overgive1l3us0m37cxeedatlrp8uzpudq8e2p2dfuc3pxm \
+--from overgive-admin --chain-id overgivechain -y
+
+overgive-chaind query permissions list-allowed
 
 //   cek dev permission
 //   overgive-chaind tx permissions add-writer --help

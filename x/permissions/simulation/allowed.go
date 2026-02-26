@@ -27,10 +27,10 @@ func SimulateMsgCreateAllowed(
 		i := r.Int()
 		msg := &types.MsgCreateAllowed{
 			Creator: simAccount.Address.String(),
-			Index:   strconv.Itoa(i),
+			Address:   strconv.Itoa(i),
 		}
 
-		found, err := k.Allowed.Has(ctx, msg.Index)
+		found, err := k.Allowed.Has(ctx, msg.Address)
 		if err == nil && found {
 			return simtypes.NoOpMsg(types.ModuleName, sdk.MsgTypeURL(msg), "Allowed already exist"), nil, nil
 		}
@@ -76,23 +76,11 @@ func SimulateMsgUpdateAllowed(
 			panic(err)
 		}
 
-		for _, obj := range allAllowed {
-			acc, err := ak.AddressCodec().StringToBytes(obj.Creator)
-			if err != nil {
-				return simtypes.OperationMsg{}, nil, err
-			}
-
-			simAccount, found = simtypes.FindAccount(accs, sdk.AccAddress(acc))
-			if found {
-				allowed = obj
-				break
-			}
-		}
 		if !found {
 			return simtypes.NoOpMsg(types.ModuleName, sdk.MsgTypeURL(msg), "allowed creator not found"), nil, nil
 		}
 		msg.Creator = simAccount.Address.String()
-		msg.Index = allowed.Index
+		msg.Address = allowed.Address
 
 		txCtx := simulation.OperationInput{
 			R:               r,
@@ -135,23 +123,11 @@ func SimulateMsgDeleteAllowed(
 			panic(err)
 		}
 
-		for _, obj := range allAllowed {
-			acc, err := ak.AddressCodec().StringToBytes(obj.Creator)
-			if err != nil {
-				return simtypes.OperationMsg{}, nil, err
-			}
-
-			simAccount, found = simtypes.FindAccount(accs, sdk.AccAddress(acc))
-			if found {
-				allowed = obj
-				break
-			}
-		}
 		if !found {
 			return simtypes.NoOpMsg(types.ModuleName, sdk.MsgTypeURL(msg), "allowed creator not found"), nil, nil
 		}
 		msg.Creator = simAccount.Address.String()
-		msg.Index = allowed.Index
+		msg.Address = allowed.Address
 
 		txCtx := simulation.OperationInput{
 			R:               r,
