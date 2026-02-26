@@ -1,4 +1,7 @@
 # Overgive Chain
+![Version](https://img.shields.io/badge/version-v0.1.0--pre--release-orange)
+![Go](https://img.shields.io/badge/go-1.24.x-blue)
+
 
 **Overgive Chain** is a Cosmos SDK blockchain built with Ignite CLI.
 
