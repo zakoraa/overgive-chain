@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"bytes"
+	// "bytes"
 	"context"
 
 	errorsmod "cosmossdk.io/errors"
@@ -16,15 +16,18 @@ func (k msgServer) CreateAllowed(
 ) (*types.MsgCreateAllowedResponse, error) {
 
 	// Validate creator address format
-	creatorBytes, err := k.addressCodec.StringToBytes(msg.Creator)
+	_, err := k.addressCodec.StringToBytes(msg.Creator)
 	if err != nil {
 		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, err.Error())
 	}
 
 	// Authority check
-	if !bytes.Equal(creatorBytes, k.authority) {
-		return nil, types.ErrUnauthorized
-	}
+	// if !bytes.Equal(creatorBytes, k.authority) {
+	// 	allowed, _ := k.Allowed.Has(ctx, msg.Creator)
+	// 	if !allowed {
+	// 		return nil, types.ErrUnauthorized
+	// 	}
+	// }
 
 	// Validate target address
 	if _, err := k.addressCodec.StringToBytes(msg.Address); err != nil {
@@ -75,15 +78,18 @@ func (k msgServer) DeleteAllowed(
 ) (*types.MsgDeleteAllowedResponse, error) {
 
 	// Validate creator address format
-	creatorBytes, err := k.addressCodec.StringToBytes(msg.Creator)
+	_, err := k.addressCodec.StringToBytes(msg.Creator)
 	if err != nil {
 		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, err.Error())
 	}
 
 	// Authority check
-	if !bytes.Equal(creatorBytes, k.authority) {
-		return nil, types.ErrUnauthorized
-	}
+	// if !bytes.Equal(creatorBytes, k.authority) {
+	// 	allowed, _ := k.Allowed.Has(ctx, msg.Creator)
+	// 	if !allowed {
+	// 		return nil, types.ErrUnauthorized
+	// 	}
+	// }
 
 	// Check if exists
 	exists, err := k.Allowed.Has(ctx, msg.Index)
