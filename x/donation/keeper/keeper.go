@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"context"
 	"fmt"
 
 	"cosmossdk.io/collections"
@@ -87,4 +88,15 @@ func NewKeeper(
 // GetAuthority returns the module's authority.
 func (k Keeper) GetAuthority() []byte {
 	return k.authority
+}
+
+func (k Keeper) isAuthorized(ctx context.Context, address string) error {
+	allowed, err := k.permissionsKeeper.HasAllowed(ctx, address)
+	if err != nil {
+		return err
+	}
+	if !allowed {
+		return permissionstypes.ErrUnauthorized
+	}
+	return nil
 }

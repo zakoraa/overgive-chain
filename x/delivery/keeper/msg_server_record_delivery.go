@@ -18,12 +18,10 @@ func (k msgServer) RecordDelivery(
 ) (*types.MsgRecordDeliveryResponse, error) {
 
 	if _, err := k.addressCodec.StringToBytes(msg.Creator); err != nil {
-		return nil, errorsmod.Wrap(err, "invalid authority address")
+		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	isAllowed, err := k.permissionsKeeper.IsAllowedWriter(ctx, msg.Creator)
+	isAllowed, err := k.permissionsKeeper.HasAllowed(goCtx, msg.Creator)
 	if err != nil {
 		return nil, err
 	}
@@ -33,6 +31,8 @@ func (k msgServer) RecordDelivery(
 			"not allowed writer",
 		)
 	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if msg.CampaignId == "" {
 		return nil, errorsmod.Wrap(
@@ -70,13 +70,6 @@ func (k msgServer) RecordDelivery(
 		)
 	}
 
-	if _, err := hex.DecodeString(msg.DeliveryHash); err != nil {
-		return nil, errorsmod.Wrap(
-			sdkerrors.ErrInvalidRequest,
-			"delivery_hash must be valid hex",
-		)
-	}
-
 	if msg.NoteHash != "" {
 		if len(msg.NoteHash) != 64 {
 			return nil, errorsmod.Wrap(
@@ -92,7 +85,11 @@ func (k msgServer) RecordDelivery(
 		}
 	}
 
-	if _, err := k.DeliveriesByHash.Get(ctx, msg.DeliveryHash); err == nil {
+	exists, err := k.DeliveriesByHash.Has(goCtx, msg.DeliveryHash)
+	if err != nil {
+		return nil, err
+	}
+	if exists {
 		return nil, errorsmod.Wrap(
 			sdkerrors.ErrInvalidRequest,
 			"delivery_hash already exists",

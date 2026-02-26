@@ -1,98 +1,101 @@
 package keeper
 
 import (
+	"bytes"
 	"context"
-	"errors"
-	"fmt"
 
-	"overgive-chain/x/permissions/types"
-
-	"cosmossdk.io/collections"
 	errorsmod "cosmossdk.io/errors"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	"overgive-chain/x/permissions/types"
 )
 
-func (k msgServer) CreateAllowed(ctx context.Context, msg *types.MsgCreateAllowed) (*types.MsgCreateAllowedResponse, error) {
-	if _, err := k.addressCodec.StringToBytes(msg.Creator); err != nil {
-		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, fmt.Sprintf("invalid address: %s", err))
-	}
+func (k msgServer) CreateAllowed(
+	ctx context.Context,
+	msg *types.MsgCreateAllowed,
+) (*types.MsgCreateAllowedResponse, error) {
 
-	// Check if the value already exists
-	ok, err := k.Allowed.Has(ctx, msg.Index)
+	// Validate creator address format
+	creatorBytes, err := k.addressCodec.StringToBytes(msg.Creator)
 	if err != nil {
-		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, err.Error())
-	} else if ok {
-		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
+		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, err.Error())
 	}
 
-	var allowed = types.Allowed{
+	// Authority check
+	if !bytes.Equal(creatorBytes, k.authority) {
+		return nil, types.ErrUnauthorized
+	}
+
+	// Validate target address
+	if _, err := k.addressCodec.StringToBytes(msg.Address); err != nil {
+		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, "invalid target address")
+	}
+
+	// Enforce index = address (whitelist design)
+	if msg.Index != msg.Address {
+		return nil, types.ErrInvalidIndex
+	}
+
+	// Check if already exists
+	exists, err := k.Allowed.Has(ctx, msg.Index)
+	if err != nil {
+		return nil, err
+	}
+	if exists {
+		return nil, types.ErrAlreadyExists
+	}
+
+	allowed := types.Allowed{
 		Creator: msg.Creator,
 		Index:   msg.Index,
 		Address: msg.Address,
 	}
 
-	if err := k.Allowed.Set(ctx, allowed.Index, allowed); err != nil {
-		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, err.Error())
+	if err := k.Allowed.Set(ctx, msg.Index, allowed); err != nil {
+		return nil, err
 	}
 
 	return &types.MsgCreateAllowedResponse{}, nil
 }
 
-func (k msgServer) UpdateAllowed(ctx context.Context, msg *types.MsgUpdateAllowed) (*types.MsgUpdateAllowedResponse, error) {
-	if _, err := k.addressCodec.StringToBytes(msg.Creator); err != nil {
-		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, fmt.Sprintf("invalid signer address: %s", err))
-	}
+func (k msgServer) UpdateAllowed(
+	ctx context.Context,
+	msg *types.MsgUpdateAllowed,
+) (*types.MsgUpdateAllowedResponse, error) {
 
-	// Check if the value exists
-	val, err := k.Allowed.Get(ctx, msg.Index)
-	if err != nil {
-		if errors.Is(err, collections.ErrNotFound) {
-			return nil, errorsmod.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
-		}
-
-		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, err.Error())
-	}
-
-	// Checks if the msg creator is the same as the current owner
-	if msg.Creator != val.Creator {
-		return nil, errorsmod.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
-	}
-
-	var allowed = types.Allowed{
-		Creator: msg.Creator,
-		Index:   msg.Index,
-		Address: msg.Address,
-	}
-
-	if err := k.Allowed.Set(ctx, allowed.Index, allowed); err != nil {
-		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, "failed to update allowed")
-	}
-
-	return &types.MsgUpdateAllowedResponse{}, nil
+	return nil, errorsmod.Wrap(
+		sdkerrors.ErrInvalidRequest,
+		"update not supported for whitelist module",
+	)
 }
 
-func (k msgServer) DeleteAllowed(ctx context.Context, msg *types.MsgDeleteAllowed) (*types.MsgDeleteAllowedResponse, error) {
-	if _, err := k.addressCodec.StringToBytes(msg.Creator); err != nil {
-		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, fmt.Sprintf("invalid signer address: %s", err))
-	}
+func (k msgServer) DeleteAllowed(
+	ctx context.Context,
+	msg *types.MsgDeleteAllowed,
+) (*types.MsgDeleteAllowedResponse, error) {
 
-	// Check if the value exists
-	val, err := k.Allowed.Get(ctx, msg.Index)
+	// Validate creator address format
+	creatorBytes, err := k.addressCodec.StringToBytes(msg.Creator)
 	if err != nil {
-		if errors.Is(err, collections.ErrNotFound) {
-			return nil, errorsmod.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
-		}
-
-		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, err.Error())
+		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, err.Error())
 	}
 
-	// Checks if the msg creator is the same as the current owner
-	if msg.Creator != val.Creator {
-		return nil, errorsmod.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
+	// Authority check
+	if !bytes.Equal(creatorBytes, k.authority) {
+		return nil, types.ErrUnauthorized
+	}
+
+	// Check if exists
+	exists, err := k.Allowed.Has(ctx, msg.Index)
+	if err != nil {
+		return nil, err
+	}
+	if !exists {
+		return nil, types.ErrNotFound
 	}
 
 	if err := k.Allowed.Remove(ctx, msg.Index); err != nil {
-		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, "failed to remove allowed")
+		return nil, err
 	}
 
 	return &types.MsgDeleteAllowedResponse{}, nil

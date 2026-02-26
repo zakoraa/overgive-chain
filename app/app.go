@@ -234,7 +234,6 @@ func New(
 		&app.DonationKeeper,
 		&app.DeliveryKeeper,
 		&app.PermissionsKeeper,
-		&app.PermissionsKeeper,
 	); err != nil {
 		panic(err)
 	}

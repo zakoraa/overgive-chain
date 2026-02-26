@@ -25,3 +25,8 @@ type ParamSubspace interface {
 	Get(context.Context, []byte, interface{})
 	Set(context.Context, []byte, interface{})
 }
+
+
+type PermissionsKeeper interface {
+	HasAllowed(ctx context.Context, address string) (bool, error)
+}

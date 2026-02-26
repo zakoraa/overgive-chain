@@ -90,10 +90,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 			weightMsgAddPermissions = defaultWeightMsgAddPermissions
 		},
 	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgAddPermissions,
-		permissionssimulation.SimulateMsgAddPermissions(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
-	))
+
 	const (
 		opWeightMsgRemovePermissions          = "op_weight_msg_permissions"
 		defaultWeightMsgRemovePermissions int = 100
@@ -105,10 +102,6 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 			weightMsgRemovePermissions = defaultWeightMsgRemovePermissions
 		},
 	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgRemovePermissions,
-		permissionssimulation.SimulateMsgRemovePermissions(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
-	))
 
 	return operations
 }

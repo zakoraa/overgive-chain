@@ -26,7 +26,7 @@ type fixture struct {
 
 type mockPermissionsKeeper struct{}
 
-func (m mockPermissionsKeeper) IsAllowedWriter(ctx sdk.Context, addr string) (bool, error) {
+func (m mockPermissionsKeeper) HasAllowed(ctx context.Context, address string) (bool, error) {
 	return true, nil
 }
 

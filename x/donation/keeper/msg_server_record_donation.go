@@ -5,29 +5,37 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"overgive-chain/x/donation/types"
+	"strings"
 
-	"cosmossdk.io/math"
+	"overgive-chain/x/donation/types"
+	permissionstypes "overgive-chain/x/permissions/types"
 
 	errorsmod "cosmossdk.io/errors"
+	"cosmossdk.io/math"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k msgServer) RecordDonation(goCtx context.Context, msg *types.MsgRecordDonation) (*types.MsgRecordDonationResponse, error) {
+func (k msgServer) RecordDonation(
+	goCtx context.Context,
+	msg *types.MsgRecordDonation,
+) (*types.MsgRecordDonationResponse, error) {
+
 	if _, err := k.addressCodec.StringToBytes(msg.Creator); err != nil {
-		return nil, errorsmod.Wrap(err, "invalid authority address")
+		return nil, errorsmod.Wrap(
+			sdkerrors.ErrInvalidAddress,
+			"invalid creator address",
+		)
 	}
 
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	isAllowed, err := k.permissionsKeeper.IsAllowedWriter(ctx, msg.Creator)
+	isAllowed, err := k.permissionsKeeper.HasAllowed(goCtx, msg.Creator)
 	if err != nil {
 		return nil, err
 	}
 	if !isAllowed {
 		return nil, errorsmod.Wrap(
-			sdkerrors.ErrUnauthorized,
+			permissionstypes.ErrUnauthorized,
 			"not allowed writer",
 		)
 	}
@@ -39,13 +47,6 @@ func (k msgServer) RecordDonation(goCtx context.Context, msg *types.MsgRecordDon
 		)
 	}
 
-	if _, err := math.LegacyNewDecFromStr(msg.Amount); err != nil {
-		return nil, errorsmod.Wrap(
-			sdkerrors.ErrInvalidRequest,
-			"invalid amount",
-		)
-	}
-
 	if len(msg.CampaignId) > 64 {
 		return nil, errorsmod.Wrap(
 			sdkerrors.ErrInvalidRequest,
@@ -53,13 +54,17 @@ func (k msgServer) RecordDonation(goCtx context.Context, msg *types.MsgRecordDon
 		)
 	}
 
-	sum := sha256.Sum256([]byte(msg.PaymentReferenceId))
-	donationHash := hex.EncodeToString(sum[:])
-
 	if msg.PaymentReferenceId == "" {
 		return nil, errorsmod.Wrap(
 			sdkerrors.ErrInvalidRequest,
 			"payment_reference_id required",
+		)
+	}
+
+	if msg.Currency == "" {
+		return nil, errorsmod.Wrap(
+			sdkerrors.ErrInvalidRequest,
+			"currency required",
 		)
 	}
 
@@ -78,12 +83,23 @@ func (k msgServer) RecordDonation(goCtx context.Context, msg *types.MsgRecordDon
 		)
 	}
 
-	if msg.Currency == "" {
+	sum := sha256.Sum256([]byte(msg.PaymentReferenceId))
+	donationHash := hex.EncodeToString(sum[:])
+
+	donationHash = strings.ToLower(donationHash)
+
+	exists, err := k.DonationsByHash.Has(goCtx, donationHash)
+	if err != nil {
+		return nil, err
+	}
+	if exists {
 		return nil, errorsmod.Wrap(
 			sdkerrors.ErrInvalidRequest,
-			"currency required",
+			"donation_hash already exists",
 		)
 	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	donation := types.Donation{
 		CampaignId:         msg.CampaignId,
@@ -94,10 +110,6 @@ func (k msgServer) RecordDonation(goCtx context.Context, msg *types.MsgRecordDon
 		MetadataHash:       msg.MetadataHash,
 		Creator:            msg.Creator,
 		RecordedAt:         ctx.BlockTime().Unix(),
-	}
-
-	if _, err := k.DonationsByHash.Get(ctx, donation.DonationHash); err == nil {
-		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidRequest, "donation_hash already exists")
 	}
 
 	id, err := k.AppendDonation(goCtx, donation)
@@ -118,5 +130,4 @@ func (k msgServer) RecordDonation(goCtx context.Context, msg *types.MsgRecordDon
 	return &types.MsgRecordDonationResponse{
 		Id: id,
 	}, nil
-
 }

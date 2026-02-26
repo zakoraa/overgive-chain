@@ -28,13 +28,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Short:          "Gets a allowed",
 					Alias:          []string{"show-allowed"},
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
-				},
-				{
-					RpcMethod:      "IsAllowed",
-					Use:            "is-allowed [address]",
-					Short:          "Query is-allowed",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "address"}},
-				},
+				},		
 
 				// this line is used by ignite scaffolding # autocli/query
 			},
@@ -64,18 +58,6 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Use:            "delete-allowed [index]",
 					Short:          "Delete allowed",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
-				},
-				{
-					RpcMethod:      "AddPermissions",
-					Use:            "add-permissions [address]",
-					Short:          "Send a add-permissions tx",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "address"}},
-				},
-				{
-					RpcMethod:      "RemovePermissions",
-					Use:            "remove-permissions [address]",
-					Short:          "Send a remove-permissions tx",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "address"}},
 				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},

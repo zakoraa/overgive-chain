@@ -27,11 +27,6 @@ service Query {
   rpc ListAllowed(QueryAllAllowedRequest) returns (QueryAllAllowedResponse) {
     option (google.api.http).get = "/overgive-chain/permissions/v1/allowed";
   }
-
-  // IsAllowed Queries a list of IsAllowed items.
-  rpc IsAllowed(QueryIsAllowedRequest) returns (QueryIsAllowedResponse) {
-    option (google.api.http).get = "/overgive-chain/permissions/v1/allowed/{address}";
-  }
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -66,11 +61,3 @@ message QueryAllAllowedResponse {
   repeated Allowed allowed = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
-
-// QueryIsAllowedRequest defines the QueryIsAllowedRequest message.
-message QueryIsAllowedRequest {
-  string address = 1;
-}
-
-// QueryIsAllowedResponse defines the QueryIsAllowedResponse message.
-message QueryIsAllowedResponse {}
