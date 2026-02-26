@@ -12,7 +12,7 @@ import (
 	"overgive-chain/x/permissions/types"
 )
 
-func SimulateMsgUpdatePermissions(
+func SimulateMsgAddPermissions(
 	ak types.AuthKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
@@ -21,12 +21,12 @@ func SimulateMsgUpdatePermissions(
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		msg := &types.MsgUpdatePermissions{
+		msg := &types.MsgAddPermissions{
 			Creator: simAccount.Address.String(),
 		}
 
-		// TODO: Handle the UpdatePermissions simulation
+		// TODO: Handle the AddPermissions simulation
 
-		return simtypes.NoOpMsg(types.ModuleName, sdk.MsgTypeURL(msg), "UpdatePermissions simulation not implemented"), nil, nil
+		return simtypes.NoOpMsg(types.ModuleName, sdk.MsgTypeURL(msg), "AddPermissions simulation not implemented"), nil, nil
 	}
 }

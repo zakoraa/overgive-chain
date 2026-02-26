@@ -44,10 +44,10 @@ func NewKeeper(
 	sb := collections.NewSchemaBuilder(storeService)
 
 	k := Keeper{
-		storeService: storeService,
-		cdc:          cdc,
-		addressCodec: addressCodec,
-		authority:    authority,
+		storeService:      storeService,
+		cdc:               cdc,
+		addressCodec:      addressCodec,
+		authority:         authority,
 		permissionsKeeper: permissionsKeeper,
 
 		Params: collections.NewItem(sb, donationtypes.ParamsKey, "params", codec.CollValue[donationtypes.Params](cdc)),

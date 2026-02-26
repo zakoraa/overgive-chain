@@ -136,6 +136,7 @@ var (
 						donationmoduletypes.ModuleName,
 						deliverymoduletypes.ModuleName,
 						permissionsmoduletypes.ModuleName,
+						permissionsmoduletypes.ModuleName,
 						// this line is used by starport scaffolding # stargate/app/beginBlockers
 					},
 					EndBlockers: []string{
@@ -146,6 +147,7 @@ var (
 						// chain modules
 						donationmoduletypes.ModuleName,
 						deliverymoduletypes.ModuleName,
+						permissionsmoduletypes.ModuleName,
 						permissionsmoduletypes.ModuleName,
 						// this line is used by starport scaffolding # stargate/app/endBlockers
 					},
@@ -185,6 +187,7 @@ var (
 						// chain modules
 						donationmoduletypes.ModuleName,
 						deliverymoduletypes.ModuleName,
+						permissionsmoduletypes.ModuleName,
 						permissionsmoduletypes.ModuleName,
 						// this line is used by starport scaffolding # stargate/app/initGenesis
 					},
@@ -289,6 +292,10 @@ var (
 			{
 				Name:   deliverymoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&deliverymoduletypes.Module{}),
+			},
+			{
+				Name:   permissionsmoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&permissionsmoduletypes.Module{}),
 			},
 			{
 				Name:   permissionsmoduletypes.ModuleName,

@@ -1,10 +1,12 @@
 syntax = "proto3";
+
 package overgivechain.permissions.v1;
 
 import "amino/amino.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
+import "overgivechain/permissions/v1/allowed.proto";
 import "overgivechain/permissions/v1/params.proto";
 
 option go_package = "overgive-chain/x/permissions/types";
@@ -13,7 +15,22 @@ option go_package = "overgive-chain/x/permissions/types";
 service Query {
   // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
-    option (google.api.http).get = "/overgivechain/permissions/v1/params";
+    option (google.api.http).get = "/overgive-chain/permissions/v1/params";
+  }
+
+  // ListAllowed Queries a list of Allowed items.
+  rpc GetAllowed(QueryGetAllowedRequest) returns (QueryGetAllowedResponse) {
+    option (google.api.http).get = "/overgive-chain/permissions/v1/allowed/{index}";
+  }
+
+  // ListAllowed defines the ListAllowed RPC.
+  rpc ListAllowed(QueryAllAllowedRequest) returns (QueryAllAllowedResponse) {
+    option (google.api.http).get = "/overgive-chain/permissions/v1/allowed";
+  }
+
+  // IsAllowed Queries a list of IsAllowed items.
+  rpc IsAllowed(QueryIsAllowedRequest) returns (QueryIsAllowedResponse) {
+    option (google.api.http).get = "/overgive-chain/permissions/v1/allowed/{address}";
   }
 }
 
@@ -28,3 +45,32 @@ message QueryParamsResponse {
     (amino.dont_omitempty) = true
   ];
 }
+
+// QueryGetAllowedRequest defines the QueryGetAllowedRequest message.
+message QueryGetAllowedRequest {
+  string index = 1;
+}
+
+// QueryGetAllowedResponse defines the QueryGetAllowedResponse message.
+message QueryGetAllowedResponse {
+  Allowed allowed = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllAllowedRequest defines the QueryAllAllowedRequest message.
+message QueryAllAllowedRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllAllowedResponse defines the QueryAllAllowedResponse message.
+message QueryAllAllowedResponse {
+  repeated Allowed allowed = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryIsAllowedRequest defines the QueryIsAllowedRequest message.
+message QueryIsAllowedRequest {
+  string address = 1;
+}
+
+// QueryIsAllowedResponse defines the QueryIsAllowedResponse message.
+message QueryIsAllowedResponse {}

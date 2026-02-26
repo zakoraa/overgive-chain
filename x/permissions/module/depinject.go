@@ -7,7 +7,7 @@ import (
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/depinject/appconfig"
 	"github.com/cosmos/cosmos-sdk/codec"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 
 	"overgive-chain/x/permissions/keeper"
 	"overgive-chain/x/permissions/types"
@@ -46,19 +46,9 @@ type ModuleOutputs struct {
 
 func ProvideModule(in ModuleInputs) ModuleOutputs {
 	// default to governance authority if not provided
-	// authority := authtypes.NewModuleAddress(types.GovModuleName)
-	// if in.Config.Authority != "" {
-	// 	authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
-	// }
-
-	// fix this, dont hardcode
-	// instead, i must make a MSG to store the wallets
-	// and then read them for validation
-	authorityStr := "overgive19qxzxfpttj8un5qzg8qtna7rlhm63an46tc2rz" // address overgive-admin
-
-	authority, err := sdk.AccAddressFromBech32(authorityStr)
-	if err != nil {
-		panic(err)
+	authority := authtypes.NewModuleAddress(types.GovModuleName)
+	if in.Config.Authority != "" {
+		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
 	}
 	k := keeper.NewKeeper(
 		in.StoreService,

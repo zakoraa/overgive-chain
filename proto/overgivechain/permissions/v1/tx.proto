@@ -18,11 +18,20 @@ service Msg {
   // parameters. The authority defaults to the x/gov module account.
   rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
 
-  // UpdatePermissions defines the UpdatePermissions RPC.
-  rpc UpdatePermissions(MsgUpdatePermissions) returns (MsgUpdatePermissionsResponse);
-  
-  // AddWriter defines the AddWriter RPC. DEV PURPOSE
-  rpc AddWriter(MsgAddWriter) returns (MsgAddWriterResponse);
+  // CreateAllowed defines the CreateAllowed RPC.
+  rpc CreateAllowed(MsgCreateAllowed) returns (MsgCreateAllowedResponse);
+
+  // UpdateAllowed defines the UpdateAllowed RPC.
+  rpc UpdateAllowed(MsgUpdateAllowed) returns (MsgUpdateAllowedResponse);
+
+  // DeleteAllowed defines the DeleteAllowed RPC.
+  rpc DeleteAllowed(MsgDeleteAllowed) returns (MsgDeleteAllowedResponse);
+
+  // AddPermissions defines the AddPermissions RPC.
+  rpc AddPermissions(MsgAddPermissions) returns (MsgAddPermissionsResponse);
+
+  // RemovePermissions defines the RemovePermissions RPC.
+  rpc RemovePermissions(MsgRemovePermissions) returns (MsgRemovePermissionsResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -46,20 +55,54 @@ message MsgUpdateParams {
 // MsgUpdateParams message.
 message MsgUpdateParamsResponse {}
 
-// MsgUpdatePermissions defines the MsgUpdatePermissions message.
-message MsgUpdatePermissions {
+// MsgCreateAllowed defines the MsgCreateAllowed message.
+message MsgCreateAllowed {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string index = 2;
+  string address = 3;
 }
 
-// MsgUpdatePermissionsResponse defines the MsgUpdatePermissionsResponse message.
-message MsgUpdatePermissionsResponse {}
+// MsgCreateAllowedResponse defines the MsgCreateAllowedResponse message.
+message MsgCreateAllowedResponse {}
 
-message MsgAddWriter {
-  option (cosmos.msg.v1.signer) = "authority";
-
-  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
-  string writer    = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+// MsgUpdateAllowed defines the MsgUpdateAllowed message.
+message MsgUpdateAllowed {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string index = 2;
+  string address = 3;
 }
 
-message MsgAddWriterResponse {}
+// MsgUpdateAllowedResponse defines the MsgUpdateAllowedResponse message.
+message MsgUpdateAllowedResponse {}
+
+// MsgDeleteAllowed defines the MsgDeleteAllowed message.
+message MsgDeleteAllowed {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string index = 2;
+}
+
+// MsgDeleteAllowedResponse defines the MsgDeleteAllowedResponse message.
+message MsgDeleteAllowedResponse {}
+
+// MsgAddPermissions defines the MsgAddPermissions message.
+message MsgAddPermissions {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string address = 2;
+}
+
+// MsgAddPermissionsResponse defines the MsgAddPermissionsResponse message.
+message MsgAddPermissionsResponse {}
+
+// MsgRemovePermissions defines the MsgRemovePermissions message.
+message MsgRemovePermissions {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string address = 2;
+}
+
+// MsgRemovePermissionsResponse defines the MsgRemovePermissionsResponse message.
+message MsgRemovePermissionsResponse {}

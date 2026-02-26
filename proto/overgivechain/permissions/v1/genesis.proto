@@ -1,8 +1,10 @@
 syntax = "proto3";
+
 package overgivechain.permissions.v1;
 
 import "amino/amino.proto";
 import "gogoproto/gogo.proto";
+import "overgivechain/permissions/v1/allowed.proto";
 import "overgivechain/permissions/v1/params.proto";
 
 option go_package = "overgive-chain/x/permissions/types";
@@ -14,4 +16,5 @@ message GenesisState {
     (gogoproto.nullable) = false,
     (amino.dont_omitempty) = true
   ];
+  repeated Allowed allowed_map = 2 [(gogoproto.nullable) = false];
 }

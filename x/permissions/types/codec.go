@@ -8,7 +8,17 @@ import (
 
 func RegisterInterfaces(registrar codectypes.InterfaceRegistry) {
 	registrar.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgUpdatePermissions{},
+		&MsgRemovePermissions{},
+	)
+
+	registrar.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgAddPermissions{},
+	)
+
+	registrar.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCreateAllowed{},
+		&MsgUpdateAllowed{},
+		&MsgDeleteAllowed{},
 	)
 
 	registrar.RegisterImplementations((*sdk.Msg)(nil),

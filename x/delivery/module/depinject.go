@@ -12,7 +12,6 @@ import (
 	"overgive-chain/x/delivery/keeper"
 	"overgive-chain/x/delivery/types"
 	permissionskeeper "overgive-chain/x/permissions/keeper"
-
 )
 
 var _ depinject.OnePerModuleType = AppModule{}

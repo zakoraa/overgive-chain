@@ -7,7 +7,7 @@
 /*
 overgive-chaind tx donation record-donation   campaign4   750000   IDR   PAY4   \
 a3f5c9e7d2b14f6c8a9e0b1d2c3f4a5e6d7c8b9a0e1f2d3c4b5a6f7e8d9c0b3   META3   --from overgive-admin   --fees 2000stake   --node \
-tcp://localhost:26657   --chain-id overgivechain   --home ~/.overgive-chain   --yes 
+tcp://localhost:26657   --chain-id overgivechain   --home ~/.overgive-chain   --yes
 */
 // overgive-chaind query donation donations
 /*
@@ -30,19 +30,18 @@ overgive-chaind tx permissions add-writer \
 // GOVERNANCE
 // overgive-chaind query auth module-account gov
 
-/* 
+/*
 overgive-chaind tx gov submit-proposal proposal.json \
 --from overgive-admin \
 --fees 2000stake \
 --yes
 */
 
-/* 
+/*
 overgive-chaind tx gov vote 1 yes \
   --from overgive-admin \
   --yes
 */
-
 
 package app
 
@@ -129,10 +128,10 @@ type App struct {
 	// keepers
 	// only keepers required by the app are exposed
 	// the list of all modules is available in the app_config
-	AuthKeeper     authkeeper.AccountKeeper
-	BankKeeper     bankkeeper.Keeper
-	StakingKeeper  *stakingkeeper.Keeper
-	SlashingKeeper slashingkeeper.Keeper
+	AuthKeeper            authkeeper.AccountKeeper
+	BankKeeper            bankkeeper.Keeper
+	StakingKeeper         *stakingkeeper.Keeper
+	SlashingKeeper        slashingkeeper.Keeper
 	MintKeeper            mintkeeper.Keeper
 	DistrKeeper           distrkeeper.Keeper
 	GovKeeper             *govkeeper.Keeper
@@ -234,6 +233,7 @@ func New(
 		&app.ParamsKeeper,
 		&app.DonationKeeper,
 		&app.DeliveryKeeper,
+		&app.PermissionsKeeper,
 		&app.PermissionsKeeper,
 	); err != nil {
 		panic(err)

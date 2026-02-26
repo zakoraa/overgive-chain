@@ -21,8 +21,21 @@ func TestGenesisState_Validate(t *testing.T) {
 		},
 		{
 			desc:     "valid genesis state",
-			genState: &types.GenesisState{},
+			genState: &types.GenesisState{AllowedMap: []types.Allowed{{Index: "0"}, {Index: "1"}}},
 			valid:    true,
+		}, {
+			desc: "duplicated allowed",
+			genState: &types.GenesisState{
+				AllowedMap: []types.Allowed{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
 		},
 	}
 	for _, tc := range tests {

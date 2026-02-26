@@ -7,6 +7,7 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 
+	"overgive-chain/testutil/sample"
 	permissionssimulation "overgive-chain/x/permissions/simulation"
 	"overgive-chain/x/permissions/types"
 )
@@ -19,7 +20,11 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	permissionsGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
-	}
+		AllowedMap: []types.Allowed{{Creator: sample.AccAddress(),
+			Index: "0",
+		}, {Creator: sample.AccAddress(),
+			Index: "1",
+		}}}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&permissionsGenesis)
 }
 
@@ -30,19 +35,79 @@ func (am AppModule) RegisterStoreDecoder(_ simtypes.StoreDecoderRegistry) {}
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
 	const (
-		opWeightMsgUpdatePermissions          = "op_weight_msg_permissions"
-		defaultWeightMsgUpdatePermissions int = 100
+		opWeightMsgCreateAllowed          = "op_weight_msg_permissions"
+		defaultWeightMsgCreateAllowed int = 100
 	)
 
-	var weightMsgUpdatePermissions int
-	simState.AppParams.GetOrGenerate(opWeightMsgUpdatePermissions, &weightMsgUpdatePermissions, nil,
+	var weightMsgCreateAllowed int
+	simState.AppParams.GetOrGenerate(opWeightMsgCreateAllowed, &weightMsgCreateAllowed, nil,
 		func(_ *rand.Rand) {
-			weightMsgUpdatePermissions = defaultWeightMsgUpdatePermissions
+			weightMsgCreateAllowed = defaultWeightMsgCreateAllowed
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgUpdatePermissions,
-		permissionssimulation.SimulateMsgUpdatePermissions(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
+		weightMsgCreateAllowed,
+		permissionssimulation.SimulateMsgCreateAllowed(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
+	))
+	const (
+		opWeightMsgUpdateAllowed          = "op_weight_msg_permissions"
+		defaultWeightMsgUpdateAllowed int = 100
+	)
+
+	var weightMsgUpdateAllowed int
+	simState.AppParams.GetOrGenerate(opWeightMsgUpdateAllowed, &weightMsgUpdateAllowed, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateAllowed = defaultWeightMsgUpdateAllowed
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateAllowed,
+		permissionssimulation.SimulateMsgUpdateAllowed(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
+	))
+	const (
+		opWeightMsgDeleteAllowed          = "op_weight_msg_permissions"
+		defaultWeightMsgDeleteAllowed int = 100
+	)
+
+	var weightMsgDeleteAllowed int
+	simState.AppParams.GetOrGenerate(opWeightMsgDeleteAllowed, &weightMsgDeleteAllowed, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteAllowed = defaultWeightMsgDeleteAllowed
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteAllowed,
+		permissionssimulation.SimulateMsgDeleteAllowed(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
+	))
+	const (
+		opWeightMsgAddPermissions          = "op_weight_msg_permissions"
+		defaultWeightMsgAddPermissions int = 100
+	)
+
+	var weightMsgAddPermissions int
+	simState.AppParams.GetOrGenerate(opWeightMsgAddPermissions, &weightMsgAddPermissions, nil,
+		func(_ *rand.Rand) {
+			weightMsgAddPermissions = defaultWeightMsgAddPermissions
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgAddPermissions,
+		permissionssimulation.SimulateMsgAddPermissions(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
+	))
+	const (
+		opWeightMsgRemovePermissions          = "op_weight_msg_permissions"
+		defaultWeightMsgRemovePermissions int = 100
+	)
+
+	var weightMsgRemovePermissions int
+	simState.AppParams.GetOrGenerate(opWeightMsgRemovePermissions, &weightMsgRemovePermissions, nil,
+		func(_ *rand.Rand) {
+			weightMsgRemovePermissions = defaultWeightMsgRemovePermissions
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRemovePermissions,
+		permissionssimulation.SimulateMsgRemovePermissions(am.authKeeper, am.bankKeeper, am.keeper, simState.TxConfig),
 	))
 
 	return operations

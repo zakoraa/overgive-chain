@@ -10,5 +10,4 @@ option go_package = "overgive-chain/x/delivery/types";
 message Params {
   option (amino.name) = "overgivechain/x/delivery/Params";
   option (gogoproto.equal) = true;
-  
 }
