@@ -135,10 +135,56 @@ Only allowed address can execute.
 overgive-chaind tx donation record-donation   campaign1   750000   IDR   PAY123   aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa   bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb   --from writer1   --chain-id overgivechain   --gas auto -y
 ```
 
-Query Donation:
+## Query Donation:
+### 1. List All Donations
+Returns all donation records stored on-chain (with pagination).
 
 ```
 overgive-chaind query donation donations
+```
+
+Example output: 
+
+```
+donations:
+- id: "0"
+  amount: "750000"
+  campaign_id: campaign1
+  creator: overgive1z52eaynmwfj7qeu7dw7xyyat3grj3hajlu2l9k
+  currency: IDR
+  donation_hash: 36c3e2478cd6c07c98c1ad8cc0644e75b882f30eefcb0b6e0a29fee4d8ab3f0c
+  metadata_hash: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+  payment_reference_id: PAY123
+  recorded_at: "1772425897"
+pagination:
+  total: "1"
+```
+
+If the dataset grows, use pagination:
+
+```
+overgive-chaind query donation donations --page-limit 10
+```
+
+### 2. Query Donation by ID
+Retrieves a single donation using its internal auto-increment ID.
+
+```
+overgive-chaind query donation donation --id <id>
+```
+
+**Example:**
+
+```
+overgive-chaind query donation donation --id 0
+```
+
+### 3. Query Donation by Hash (recommended for web2 integration)**
+Retrieves a donation using its unique ```donation_hash```.
+
+```
+overgive-chaind query donation donation-by-hash \
+  --donation-hash <donation_hash>
 ```
 
 ---
@@ -151,10 +197,51 @@ Only allowed address can execute.
 overgive-chaind tx delivery record-delivery   campaign1   "Laporan Bantuan Palestina"   aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa   bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb   --from writer1   --chain-id overgivechain   --gas auto -y
 ```
 
-Query Delivery:
+## Query Delivery:
+
+### 1. List All Deliveries
+Returns all deliveries records stored on-chain (with pagination).
 
 ```
 overgive-chaind query delivery deliveries
+```
+**Example Output:** 
+```
+deliveries:
+- campaign_id: campaign1
+  creator: overgive1yz7hxhedy7a45kq55z3kxcr7ta99zt0eda5hf9
+  delivery_hash: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+  note_hash: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  recorded_at: "1772126435"
+  title: Laporan Bantuan Palestina
+pagination:
+  total: "1"
+```
+
+If the dataset grows, use pagination:
+```
+overgive-chaind query delivery deliveries --page-limit 10
+```
+
+### 2. Query Delivery by ID
+Retrieves a single delivery using its internal auto-increment ID.
+
+```
+overgive-chaind query delivery delivery --id <id>
+```
+
+**Example:**
+
+```
+overgive-chaind query delivery delivery --id 0
+```
+
+### 3. Query Delivery by Hash (recommended for web2 integration)
+Retrieves a delivery using its unique ```delivery_hash```.
+
+```
+overgive-chaind query delivery delivery-by-hash \
+  --delivery-hash <delivery_hash>
 ```
 
 ---
