@@ -152,7 +152,7 @@ SECTION: 2.2 DONATION MODULE
 
 <p>
 For full Delivery module documentation, see:<br>
-<a href="https://github.com/zakoraa/overgive-chain?tab=readme-ov-file#21-permissions-module" target="_blank">
+<a href="https://github.com/zakoraa/overgive-chain?tab=readme-ov-file#23-delivery-module" target="_blank">
 SECTION: 2.3 DELIVERY MODULE
 </a>
 </p>
