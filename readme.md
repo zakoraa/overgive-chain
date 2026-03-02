@@ -99,14 +99,10 @@ If balance appears -> account is active and ready to send transactions.
 
 ---
 
-# Step 5: IMPORTANT FLOW
+# Step 5: Create Allowed Address (IMPORTANT FLOW)
 
 Before recording Donation or Delivery,
 **you MUST register the address in permissions**.
-
----
-
-# Step 6: Create Allowed Address
 
 Only admin/authority can do this.
 
@@ -131,7 +127,7 @@ If not allowed -> Donation & Delivery will fail with:
 
 ---
 
-# Step 7: Record Donation
+# Step 6: Record Donation
 
 Only allowed address can execute.
 
@@ -147,7 +143,7 @@ overgive-chaind query donation donations
 
 ---
 
-# Step 8: Record Delivery
+# Step 7: Record Delivery
 
 Only allowed address can execute.
 
@@ -158,7 +154,7 @@ overgive-chaind tx delivery record-delivery   campaign1   "Laporan Bantuan Pales
 Query Delivery:
 
 ```
-overgive-chaind query delivery deliverys
+overgive-chaind query delivery deliveries
 ```
 
 ---
