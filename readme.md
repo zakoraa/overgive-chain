@@ -328,11 +328,32 @@ linked to campaign activities.
 
 <pre><code>overgive-chaind query delivery deliveries</code></pre>
 
+<p>Example output:</p>
+
+<pre><code>
+deliveries:
+- campaign_id: campaign1
+  creator: overgive1yz7hxhedy7a45kq55z3kxcr7ta99zt0eda5hf9
+  delivery_hash: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+  note_hash: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  recorded_at: "1772126435"
+  title: Laporan Bantuan Palestina
+pagination:
+  total: "1"</code></pre>
+
+<p>If the dataset grows, use pagination:</p>
+
+<pre><code>overgive-chaind query delivery deliveries --page-limit 10</code></pre>
+
 <h4>2. Query Delivery by ID</h4>
 
 <p>Retrieves a single delivery using its internal auto-increment ID.</p>
 
 <pre><code>overgive-chaind query delivery delivery --id &lt;id&gt;</code></pre>
+
+<p>Example:</p>
+
+<pre><code>overgive-chaind query delivery delivery --id 0</code></pre>
 
 <h4>3. Query Delivery by Hash (Recommended for Web2 Integration)</h4>
 
