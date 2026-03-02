@@ -25,12 +25,40 @@ hr { margin:40px 0; }
 
 <p>GitHub Repository (Web App):<br>
 <a href="https://github.com/zakoraa/overgive-web">https://github.com/zakoraa/overgive-web</a></p>
-
 <hr>
 
-<h1>1 SETUP & EXECUTION STEPS</h1>
+<h1>TABLE OF CONTENTS</h1>
 
-<h2>Step 1: Prerequisites (Install First)</h2>
+<ul>
+  <li><a href="#setup">1. SETUP & EXECUTION STEPS</a>
+    <ul>
+      <li><a href="#step1">Step 1: Prerequisites</a></li>
+      <li><a href="#step2">Step 2: Run Blockchain</a></li>
+      <li><a href="#step3">Step 3: Initialize Wallet</a></li>
+      <li><a href="#step4">Step 4: Fund Wallet</a></li>
+      <li><a href="#step5">Step 5: Create Allowed Address</a></li>
+      <li><a href="#step6">Step 6: Record Donation</a></li>
+      <li><a href="#step7">Step 7: Record Delivery</a></li>
+      <li><a href="#flow">Full Execution Flow</a></li>
+      <li><a href="#useful">Useful Commands</a></li>
+    </ul>
+  </li>
+
+  <li><a href="#modules">2. MODULE DOCUMENTATION</a>
+    <ul>
+      <li><a href="#permissions">2.1 Permissions Module</a></li>
+      <li><a href="#donation">2.2 Donation Module</a></li>
+      <li><a href="#delivery">2.3 Delivery Module</a></li>
+    </ul>
+  </li>
+</ul>
+
+<hr>
+<hr>
+
+<h1 id="setup">1 SETUP & EXECUTION STEPS</h1>
+
+<h2  id="step1">Step 1: Prerequisites (Install First)</h2>
 
 <h3>Install Go 1.24.x recommended (must match go.mod)</h3>
 <p><a href="https://go.dev/dl/">https://go.dev/dl/</a></p>
@@ -46,7 +74,7 @@ hr { margin:40px 0; }
 
 <hr>
 
-<h2>Step 2: Run Blockchain (Development Mode)</h2>
+<h2  id="step2">Step 2: Run Blockchain (Development Mode)</h2>
 
 <p>Inside project directory:</p>
 
@@ -61,7 +89,7 @@ hr { margin:40px 0; }
 
 <hr>
 
-<h2>Step 3: Initialize Wallet</h2>
+<h2 id="step3">Step 3: Initialize Wallet</h2>
 
 <p>Check available keys:</p>
 <pre><code>overgive-chaind keys list</code></pre>
@@ -77,7 +105,7 @@ hr { margin:40px 0; }
 
 <hr>
 
-<h2>Step 4: Fund Wallet</h2>
+<h2 id="step4">Step 4: Fund Wallet</h2>
 
 <p>Send token from admin to writer1:</p>
 
@@ -91,7 +119,7 @@ hr { margin:40px 0; }
 
 <hr>
 
-<h2>Step 5: Create Allowed Address (IMPORTANT FLOW)</h2>
+<h2 id="step5">Step 5: Create Allowed Address (IMPORTANT FLOW)</h2>
 
 <p>Before recording Donation or Delivery,<br>
 <strong>you MUST register the address in permissions</strong>.</p>
@@ -120,7 +148,7 @@ SECTION: 2.1 PERMISSIONS MODULE
 
 <hr>
 
-<h2>Step 6: Record Donation</h2>
+<h2 id="step6">Step 6: Record Donation</h2>
 
 <p>Only allowed address can execute.</p>
 
@@ -140,7 +168,7 @@ SECTION: 2.2 DONATION MODULE
 
 <hr>
 
-<h2>Step 7: Record Delivery</h2>
+<h2 id="step7">Step 7: Record Delivery</h2>
 
 <p>Only allowed address can execute.</p>
 
@@ -159,7 +187,7 @@ SECTION: 2.3 DELIVERY MODULE
 
 <hr>
 
-<h2>Full Execution Flow (Short Version)</h2>
+<h2 id="flow">Full Execution Flow (Short Version)</h2>
 
 <ol>
 <li>Install Go &amp; Ignite</li>
@@ -176,7 +204,7 @@ SECTION: 2.3 DELIVERY MODULE
 
 <hr>
 
-<h2>Useful Commands</h2>
+<h2 id="useful">Useful Commands</h2>
 
 <p>Check address:</p>
 <pre><code>overgive-chaind keys show &lt;name&gt; -a</code></pre>
@@ -187,9 +215,9 @@ SECTION: 2.3 DELIVERY MODULE
 <hr>
 
 
-<h1>2 MODULE DOCUMENTATION</h1>
+<h1 id="modules">2 MODULE DOCUMENTATION</h1>
 
-<h2>2.1 PERMISSIONS MODULE</h2>
+<h2 id="permissions">2.1 PERMISSIONS MODULE</h2>
 
 <p>
 The Permissions module controls which addresses are allowed to record
@@ -269,7 +297,7 @@ After deletion, the address can no longer record data.
 
 <hr>
 
-<h2>2.2 DONATION MODULE</h2>
+<h2 id="donation">2.2 DONATION MODULE</h2>
 
 <p>
 The Donation module stores immutable donation records as cryptographic proof.
@@ -361,7 +389,7 @@ pagination:
 
 <hr>
 
-<h2>2.3 DELIVERY MODULE</h2>
+<h2 id="delivery">2.3 DELIVERY MODULE</h2>
 
 <p>
 The Delivery module stores immutable distribution (delivery) records
