@@ -1,281 +1,274 @@
-# Overgive Chain
-![Version](https://img.shields.io/badge/version-v0.1.0--pre--release-orange)
-![Go](https://img.shields.io/badge/go-1.24.x-blue)
+<!DOCTYPE html>
+<html>
+<!-- <head>
+<meta charset="UTF-8">
+<title>Overgive Chain Documentation</title>
+<style>
+body { font-family: Arial, sans-serif; line-height: 1.6; }
+pre { background:#f5f5f5; padding:12px; overflow-x:auto; }
+code { font-family: Consolas, monospace; }
+hr { margin:40px 0; }
+</style>
+</head> -->
+<body>
 
+<h1>Overgive Chain</h1>
 
-**Overgive Chain** is a Cosmos SDK blockchain built with Ignite CLI.
+<p>
+<img src="https://img.shields.io/badge/version-v0.1.0--pre--release-orange" alt="Version">
+<img src="https://img.shields.io/badge/go-1.24.x-blue" alt="Go">
+</p>
 
-**Overgive Chain** is designed as a supporting blockchain layer for the Overgive Crowdfunding Platform (Web2 application). It is used to store immutable records of donation data and donation distribution (delivery) data as a cryptographic proof layer to ensure transparency, integrity, and auditability. Full business logic and detailed data remain in the Web2 backend, while the blockchain functions as a tamper-proof public ledger.
+<p><strong>Overgive Chain</strong> is a Cosmos SDK blockchain built with Ignite CLI.</p>
 
-GitHub Repository (Web App):
-https://github.com/zakoraa/overgive-web
+<p><strong>Overgive Chain</strong> is designed as a supporting blockchain layer for the Overgive Crowdfunding Platform (Web2 application). It is used to store immutable records of donation data and donation distribution (delivery) data as a cryptographic proof layer to ensure transparency, integrity, and auditability. Full business logic and detailed data remain in the Web2 backend, while the blockchain functions as a tamper-proof public ledger.</p>
 
----
-# A. SETUP & EXECUTION STEPS
+<p>GitHub Repository (Web App):<br>
+<a href="https://github.com/zakoraa/overgive-web">https://github.com/zakoraa/overgive-web</a></p>
 
-# Step 1: Prerequisites (Install First)
+<hr>
 
-## Install Go 1.24.x recommended (must match go.mod)
-https://go.dev/dl/
+<h1>1 SETUP & EXECUTION STEPS</h1>
 
-Verify:
-```
-go version
-```
+<h2>Step 1: Prerequisites (Install First)</h2>
 
-## Install Ignite CLI
-```
-curl https://get.ignite.com/cli! | bash
-```
+<h3>Install Go 1.24.x recommended (must match go.mod)</h3>
+<p><a href="https://go.dev/dl/">https://go.dev/dl/</a></p>
 
-Verify:
-```
-ignite version
-```
+<p>Verify:</p>
+<pre><code>go version</code></pre>
 
----
+<h3>Install Ignite CLI</h3>
+<pre><code>curl https://get.ignite.com/cli! | bash</code></pre>
 
-# Step 2:  Run Blockchain (Development Mode)
+<p>Verify:</p>
+<pre><code>ignite version</code></pre>
 
-Inside project directory:
+<hr>
 
-```
-ignite chain serve
-```
+<h2>Step 2: Run Blockchain (Development Mode)</h2>
 
-This will:
-- Build the chain
-- Initialize state
-- Start validator
-- Expose RPC at: http://localhost:26657
+<p>Inside project directory:</p>
 
----
+<pre><code>ignite chain serve</code></pre>
 
-# Step 3:  Initialize Wallet
+<ul>
+<li>Build the chain</li>
+<li>Initialize state</li>
+<li>Start validator</li>
+<li>Expose RPC at: http://localhost:26657</li>
+</ul>
 
-Check available keys:
+<hr>
 
-```
-overgive-chaind keys list
-```
+<h2>Step 3: Initialize Wallet</h2>
 
-Check admin address:
+<p>Check available keys:</p>
+<pre><code>overgive-chaind keys list</code></pre>
 
-```
-overgive-chaind keys show overgive-admin -a
-```
+<p>Check admin address:</p>
+<pre><code>overgive-chaind keys show overgive-admin -a</code></pre>
 
-Create new wallet:
+<p>Create new wallet:</p>
+<pre><code>overgive-chaind keys add writer1</code></pre>
 
-```
-overgive-chaind keys add writer1
-```
-Check address:
-```
-overgive-chaind keys show writer1 -a
-```
+<p>Check address:</p>
+<pre><code>overgive-chaind keys show writer1 -a</code></pre>
 
----
+<hr>
 
-# Step 4: Fund Wallet
+<h2>Step 4: Fund Wallet</h2>
 
-Send token from admin to writer1:
+<p>Send token from admin to writer1:</p>
 
-```
-overgive-chaind tx bank send   overgive-admin   $(overgive-chaind keys show writer1 -a)   1000000stake   --chain-id overgivechain   --gas auto -y
-```
+<pre><code>overgive-chaind tx bank send   overgive-admin   $(overgive-chaind keys show writer1 -a)   1000000stake   --chain-id overgivechain   --gas auto -y</code></pre>
 
-Verify balance:
+<p>Verify balance:</p>
 
-```
-overgive-chaind query bank balances $(overgive-chaind keys show writer1 -a)
-```
+<pre><code>overgive-chaind query bank balances $(overgive-chaind keys show writer1 -a)</code></pre>
 
-If balance appears -> account is active and ready to send transactions.
+<p>If balance appears -> account is active and ready to send transactions.</p>
 
----
+<hr>
 
-# Step 5: Create Allowed Address (IMPORTANT FLOW)
+<h2>Step 5: Create Allowed Address (IMPORTANT FLOW)</h2>
 
-Before recording Donation or Delivery,
-**you MUST register the address in permissions**.
+<p>Before recording Donation or Delivery,<br>
+<strong>you MUST register the address in permissions</strong>.</p>
 
-Only admin/authority can do this.
+<p>Only admin/authority can do this.</p>
 
-```
-overgive-chaind tx permissions create-allowed   <address>   --from overgive-admin   --chain-id overgivechain   --gas auto -y
-```
+<pre><code>overgive-chaind tx permissions create-allowed   &lt;address&gt;   --from overgive-admin   --chain-id overgivechain   --gas auto -y</code></pre>
 
-Example:
+<p>Example:</p>
 
-```
-overgive-chaind tx permissions create-allowed   $(overgive-chaind keys show writer1 -a)   --from overgive-admin   --chain-id overgivechain   --gas auto -y
-```
+<pre><code>overgive-chaind tx permissions create-allowed   $(overgive-chaind keys show writer1 -a)   --from overgive-admin   --chain-id overgivechain   --gas auto -y</code></pre>
 
-Verify:
+<p>Verify:</p>
 
-```
-overgive-chaind query permissions get-allowed <address>
-```
+<pre><code>overgive-chaind query permissions get-allowed &lt;address&gt;</code></pre>
 
-If not allowed -> Donation & Delivery will fail with:
-"not allowed writer"
+<p>If not allowed -> Donation &amp; Delivery will fail with:<br>
+"not allowed writer"</p>
 
----
+<p>
+For full Permissions module documentation, see:<br>
+<a href="https://github.com/zakoraa/overgive-chain/edit/main/readme.md#21-permissions-module" target="_blank">
+SECTION: 2.1 PERMISSIONS MODULE
+</a>
+</p>
 
-# Step 6: Record Donation
+<hr>
 
-Only allowed address can execute.
+<h2>Step 6: Record Donation</h2>
 
-```
-overgive-chaind tx donation record-donation   campaign1   750000   IDR   PAY123   aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa   bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb   --from writer1   --chain-id overgivechain   --gas auto -y
-```
+<p>Only allowed address can execute.</p>
 
-Query Donation:
+<pre><code>overgive-chaind tx donation record-donation   campaign1   750000   IDR   PAY123   aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa   bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb   --from writer1   --chain-id overgivechain   --gas auto -y</code></pre>
 
-```
-overgive-chaind query donation donations
-```
+<p>Query Donation:</p>
 
-For full Donation module documentation, see:
-SECTION: DONATION MODULE (B. MODULE DOCUMENTATION)
+<pre><code>overgive-chaind query donation donations</code></pre>
 
-----------------------------------------------------------------
+<p>
+For full Donation module documentation, see:<br>
+<a href="https://github.com/zakoraa/overgive-chain/edit/main/readme.md#22-donation-module" target="_blank">
+SECTION: 2.2 DONATION MODULE
+</a>
+</p>
 
-# Step 7: Record Delivery
 
-Only allowed address can execute.
+<hr>
 
-```
-overgive-chaind tx delivery record-delivery   campaign1   "Laporan Bantuan Palestina"   aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa   bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb   --from writer1   --chain-id overgivechain   --gas auto -y
-```
+<h2>Step 7: Record Delivery</h2>
 
-Query Delivery:
+<p>Only allowed address can execute.</p>
 
-```
-overgive-chaind query delivery deliveries
-```
+<pre><code>overgive-chaind tx delivery record-delivery   campaign1   "Laporan Bantuan Palestina"   aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa   bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb   --from writer1   --chain-id overgivechain   --gas auto -y</code></pre>
 
-For full Delivery module documentation, see:
-SECTION: DELIVERY MODULE (B. MODULE DOCUMENTATION)
+<p>Query Delivery:</p>
 
----
+<pre><code>overgive-chaind query delivery deliveries</code></pre>
 
-# Full Execution Flow (Short Version)
+<p>
+For full Delivery module documentation, see:<br>
+<a href="https://github.com/zakoraa/overgive-chain/edit/main/readme.md#23-delivery-module" target="_blank">
+SECTION: 2.3 DELIVERY MODULE
+</a>
+</p>
 
-1. Install Go & Ignite  
-2. Run `ignite chain serve`  
-3. Create wallet (writer1)
-4. Fund wallet (bank send from admin)
-5. Admin -> create-allowed address
-6. Allowed wallet -> record donation
-7. Allowed wallet -> record delivery
-8. Query data
+<hr>
 
-Without create-allowed → transactions will fail.
+<h2>Full Execution Flow (Short Version)</h2>
 
----
+<ol>
+<li>Install Go &amp; Ignite</li>
+<li>Run <code>ignite chain serve</code></li>
+<li>Create wallet (writer1)</li>
+<li>Fund wallet (bank send from admin)</li>
+<li>Admin -> create-allowed address</li>
+<li>Allowed wallet -> record donation</li>
+<li>Allowed wallet -> record delivery</li>
+<li>Query data</li>
+</ol>
 
-# Useful Commands
+<p>Without create-allowed → transactions will fail.</p>
 
-Check address:
-```
-overgive-chaind keys show <name> -a
-```
+<hr>
 
-Check tx by hash:
-```
-overgive-chaind query tx <txhash>
-```
---- 
+<h2>Useful Commands</h2>
 
-# B. MODULE DOCUMENTATION
+<p>Check address:</p>
+<pre><code>overgive-chaind keys show &lt;name&gt; -a</code></pre>
 
-# PERMISSIONS MODULE
+<p>Check tx by hash:</p>
+<pre><code>overgive-chaind query tx &lt;txhash&gt;</code></pre>
 
+<hr>
+
+
+<h1>2 MODULE DOCUMENTATION</h1>
+
+<h2>2.1 PERMISSIONS MODULE</h2>
+
+<p>
 The Permissions module controls which addresses are allowed to record
 Donation and Delivery data on-chain.
+</p>
 
-If an address is not registered, transactions will fail with:
+<p>
+If an address is not registered, transactions will fail with:<br>
 "not allowed writer"
+</p>
 
-## Message Execution (Msg):
+<h3>Message Execution (Msg):</h3>
 
-### 1. Create Allowed Address
+<h4>1. Create Allowed Address</h4>
 
+<p>
 Registers a new address as an authorized writer.
 Only admin/authority can execute this transaction.
+</p>
 
-```
-overgive-chaind tx permissions create-allowed <address> --from overgive-admin --chain-id overgivechain --gas auto -y
-```
+<pre><code>overgive-chaind tx permissions create-allowed &lt;address&gt; --from overgive-admin --chain-id overgivechain --gas auto -y</code></pre>
 
-### 2. Delete Allowed Address
+<h4>2. Delete Allowed Address</h4>
 
+<p>
 Removes an address from the allowed list.
 After deletion, the address can no longer record data.
+</p>
 
-```
-overgive-chaind tx permissions delete-allowed <address> --from overgive-admin --chain-id overgivechain --gas auto -y
-```
+<pre><code>overgive-chaind tx permissions delete-allowed &lt;address&gt; --from overgive-admin --chain-id overgivechain --gas auto -y</code></pre>
 
-## Query Permissions:
+<h3>Query Permissions:</h3>
 
-### 1. Query Allowed Address
+<h4>1. Query Allowed Address</h4>
 
-Checks whether an address is registered.
+<p>Checks whether an address is registered.</p>
 
-```
-overgive-chaind query permissions get-allowed <address>
-```
+<pre><code>overgive-chaind query permissions get-allowed &lt;address&gt;</code></pre>
 
-### 2. List All Allowed Addresses
+<h4>2. List All Allowed Addresses</h4>
 
-Returns all registered allowed addresses (supports pagination).
+<p>Returns all registered allowed addresses (supports pagination).</p>
 
-```
-overgive-chaind query permissions list-allowed
-```
+<pre><code>overgive-chaind query permissions list-allowed</code></pre>
 
-### 3. Query Module Parameters
+<h4>3. Query Module Parameters</h4>
 
-Returns current permissions module parameters.
+<p>Returns current permissions module parameters.</p>
 
-```
-overgive-chaind query permissions params
-```
+<pre><code>overgive-chaind query permissions params</code></pre>
 
----
+<hr>
 
-# DONATION MODULE
+<h2>2.2 DONATION MODULE</h2>
 
+<p>
 The Donation module stores immutable donation records as cryptographic proof.
 Only allowed addresses can record donations.
+</p>
 
-## Message Execution (Msg):
+<h3>Message Execution (Msg):</h3>
 
-### 1. Record Donation
+<h4>1. Record Donation</h4>
 
-Creates a new donation record on-chain.
+<p>Creates a new donation record on-chain.</p>
 
-```
-overgive-chaind tx donation record-donation   campaign1   750000   IDR   PAY123   aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa   bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb   --from writer1   --chain-id overgivechain   --gas auto -y
-```
+<pre><code>overgive-chaind tx donation record-donation   campaign1   750000   IDR   PAY123   aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa   bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb   --from writer1   --chain-id overgivechain   --gas auto -y</code></pre>
 
-## Query Donation: 
+<h3>Query Donation:</h3>
 
-### 1. List All Donations
+<h4>1. List All Donations</h4>
 
-Returns all donation records stored on-chain (with pagination).
+<p>Returns all donation records stored on-chain (with pagination).</p>
 
-```
-overgive-chaind query donation donations
-```
+<pre><code>overgive-chaind query donation donations</code></pre>
 
-Example output:
+<p>Example output:</p>
 
-```
-donations:
+<pre><code>donations:
 - id: "0"
   amount: "750000"
   campaign_id: campaign1
@@ -286,78 +279,66 @@ donations:
   payment_reference_id: PAY123
   recorded_at: "1772425897"
 pagination:
-  total: "1"
-```
+  total: "1"</code></pre>
 
-If the dataset grows, use pagination:
+<p>If the dataset grows, use pagination:</p>
 
-```
-overgive-chaind query donation donations --page-limit 10
-```
+<pre><code>overgive-chaind query donation donations --page-limit 10</code></pre>
 
-### 2. Query Donation by ID
+<h4>2. Query Donation by ID</h4>
 
-Retrieves a single donation using its internal auto-increment ID.
+<p>Retrieves a single donation using its internal auto-increment ID.</p>
 
-```
-overgive-chaind query donation donation --id <id>
-```
+<pre><code>overgive-chaind query donation donation --id &lt;id&gt;</code></pre>
 
-Example:
+<p>Example:</p>
 
-```
-overgive-chaind query donation donation --id 0
-```
+<pre><code>overgive-chaind query donation donation --id 0</code></pre>
 
-### 3. Query Donation by Hash (Recommended for Web2 Integration)
+<h4>3. Query Donation by Hash (Recommended for Web2 Integration)</h4>
 
-Retrieves a donation using its unique donation_hash.
+<p>Retrieves a donation using its unique donation_hash.</p>
 
-```
-overgive-chaind query donation donation-by-hash   --donation-hash <donation_hash>
-```
+<pre><code>overgive-chaind query donation donation-by-hash   --donation-hash &lt;donation_hash&gt;</code></pre>
 
----
+<hr>
 
-# DELIVERY MODULE
+<h2>2.3 DELIVERY MODULE</h2>
 
+<p>
 The Delivery module stores immutable distribution (delivery) records
 linked to campaign activities.
+</p>
 
-Only allowed addresses can record delivery data.
+<p>Only allowed addresses can record delivery data.</p>
 
-## Message Execution (Msg):
+<h3>Message Execution (Msg):</h3>
 
-### 1. Record Delivery
+<h4>1. Record Delivery</h4>
 
-Creates a new delivery record on-chain.
+<p>Creates a new delivery record on-chain.</p>
 
-```
-overgive-chaind tx delivery record-delivery   campaign1   "Laporan Bantuan Palestina"   aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa   bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb   --from writer1   --chain-id overgivechain   --gas auto -y
-```
+<pre><code>overgive-chaind tx delivery record-delivery   campaign1   "Laporan Bantuan Palestina"   aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa   bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb   --from writer1   --chain-id overgivechain   --gas auto -y</code></pre>
 
-## Query Delivery: 
+<h3>Query Delivery:</h3>
 
-### 1. List All Deliveries
+<h4>1. List All Deliveries</h4>
 
-Returns all delivery records stored on-chain (with pagination).
+<p>Returns all delivery records stored on-chain (with pagination).</p>
 
-```
-overgive-chaind query delivery deliveries
-```
+<pre><code>overgive-chaind query delivery deliveries</code></pre>
 
-### 2. Query Delivery by ID
+<h4>2. Query Delivery by ID</h4>
 
-Retrieves a single delivery using its internal auto-increment ID.
+<p>Retrieves a single delivery using its internal auto-increment ID.</p>
 
-```
-overgive-chaind query delivery delivery --id <id>
-```
+<pre><code>overgive-chaind query delivery delivery --id &lt;id&gt;</code></pre>
 
-### 3. Query Delivery by Hash (Recommended for Web2 Integration)
+<h4>3. Query Delivery by Hash (Recommended for Web2 Integration)</h4>
 
-Retrieves a delivery using its unique delivery_hash.
+<p>Retrieves a delivery using its unique delivery_hash.</p>
 
-```
-overgive-chaind query delivery delivery-by-hash   --delivery-hash <delivery_hash>
-```
+<pre><code>overgive-chaind query delivery delivery-by-hash   --delivery-hash &lt;delivery_hash&gt;</code></pre>
+
+</body>
+</html>
