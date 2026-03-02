@@ -113,7 +113,7 @@ hr { margin:40px 0; }
 
 <p>
 For full Permissions module documentation, see:<br>
-<a href="https://github.com/zakoraa/overgive-chain/edit/main/readme.md#21-permissions-module" target="_blank">
+<a href="https://github.com/zakoraa/overgive-chain?tab=readme-ov-file#21-permissions-module" target="_blank">
 SECTION: 2.1 PERMISSIONS MODULE
 </a>
 </p>
@@ -132,7 +132,7 @@ SECTION: 2.1 PERMISSIONS MODULE
 
 <p>
 For full Donation module documentation, see:<br>
-<a href="https://github.com/zakoraa/overgive-chain/edit/main/readme.md#22-donation-module" target="_blank">
+<a href="https://github.com/zakoraa/overgive-chain?tab=readme-ov-file#22-donation-module" target="_blank">
 SECTION: 2.2 DONATION MODULE
 </a>
 </p>
@@ -152,7 +152,7 @@ SECTION: 2.2 DONATION MODULE
 
 <p>
 For full Delivery module documentation, see:<br>
-<a href="https://github.com/zakoraa/overgive-chain/edit/main/readme.md#23-delivery-module" target="_blank">
+<a href="https://github.com/zakoraa/overgive-chain?tab=readme-ov-file#21-permissions-module" target="_blank">
 SECTION: 2.3 DELIVERY MODULE
 </a>
 </p>
