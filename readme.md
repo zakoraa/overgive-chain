@@ -64,23 +64,49 @@ Check admin address:
 overgive-chaind keys show overgive-admin -a
 ```
 
-You can also create new wallet:
+Create new wallet:
 
 ```
 overgive-chaind keys add writer1
+```
+Check address:
+```
 overgive-chaind keys show writer1 -a
 ```
 
 ---
 
-# Step 4: IMPORTANT FLOW
+# Step 4: Fund Wallet
+
+Send token from admin to writer1:
+
+```
+overgive-chaind tx bank send \
+  overgive-admin \
+  $(overgive-chaind keys show writer1 -a) \
+  1000000stake \
+  --chain-id overgivechain \
+  --gas auto -y
+```
+
+Verify balance:
+
+```
+overgive-chaind query bank balances $(overgive-chaind keys show writer1 -a)
+```
+
+If balance appears -> account is active and ready to send transactions.
+
+---
+
+# Step 5: IMPORTANT FLOW
 
 Before recording Donation or Delivery,
 **you MUST register the address in permissions**.
 
 ---
 
-# Step 5: Create Allowed Address
+# Step 6: Create Allowed Address
 
 Only admin/authority can do this.
 
@@ -100,12 +126,12 @@ Verify:
 overgive-chaind query permissions get-allowed <address>
 ```
 
-If not allowed → Donation & Delivery will fail with:
+If not allowed -> Donation & Delivery will fail with:
 "not allowed writer"
 
 ---
 
-# Step 6: Record Donation
+# Step 7: Record Donation
 
 Only allowed address can execute.
 
@@ -116,12 +142,12 @@ overgive-chaind tx donation record-donation   campaign1   750000   IDR   PAY123 
 Query Donation:
 
 ```
-overgive-chaind query donation list-donation
+overgive-chaind query donation donations
 ```
 
 ---
 
-# Step 7: Record Delivery
+# Step 8: Record Delivery
 
 Only allowed address can execute.
 
@@ -132,7 +158,7 @@ overgive-chaind tx delivery record-delivery   campaign1   "Laporan Bantuan Pales
 Query Delivery:
 
 ```
-overgive-chaind query delivery list-delivery
+overgive-chaind query delivery deliverys
 ```
 
 ---
@@ -141,11 +167,12 @@ overgive-chaind query delivery list-delivery
 
 1. Install Go & Ignite  
 2. Run `ignite chain serve`  
-3. Create wallet (optional)  
-4. Admin → create-allowed address  
-5. Allowed wallet → record donation  
-6. Allowed wallet → record delivery  
-7. Query data  
+3. Create wallet (writer1)
+4. Fund wallet (bank send from admin)
+5. Admin -> create-allowed address
+6. Allowed wallet -> record donation
+7. Allowed wallet -> record delivery
+8. Query data
 
 Without create-allowed → transactions will fail.
 
