@@ -241,6 +241,32 @@ After deletion, the address can no longer record data.
 
 <pre><code>overgive-chaind query permissions params</code></pre>
 
+<h3>PERMISSIONS MODULE – Endpoints</h3>
+
+<p><strong>Base REST Path:</strong></p>
+
+<pre><code>/overgive-chain/permissions/v1</code></pre>
+
+<h4>1. Query Module Parameters</h4>
+
+<pre><code>GET /overgive-chain/permissions/v1/params</code></pre>
+
+<pre><code>http://localhost:1317/overgive-chain/permissions/v1/params</code></pre>
+
+<h4>2. Query Allowed Address</h4>
+
+<pre><code>GET /overgive-chain/permissions/v1/allowed/{address}</code></pre>
+
+<pre><code>http://localhost:1317/overgive-chain/permissions/v1/allowed/overgive1xxxxx</code></pre>
+
+<h4>3. List All Allowed Addresses</h4>
+
+<pre><code>GET /overgive-chain/permissions/v1/allowed</code></pre>
+
+<p>With pagination:</p>
+
+<pre><code>GET /overgive-chain/permissions/v1/allowed?pagination.limit=10</code></pre>
+
 <hr>
 
 <h2>2.2 DONATION MODULE</h2>
@@ -301,6 +327,38 @@ pagination:
 
 <pre><code>overgive-chaind query donation donation-by-hash   --donation-hash &lt;donation_hash&gt;</code></pre>
 
+<h3>DONATION MODULE – Endpoints</h3>
+
+<p><strong>Base REST Path:</strong></p>
+
+<pre><code>/overgivechain/donation/v1</code></pre>
+
+<h4>1. Query Module Parameters</h4>
+
+<pre><code>GET /overgivechain/donation/v1/params</code></pre>
+
+<pre><code>http://localhost:1317/overgivechain/donation/v1/params</code></pre>
+
+<h4>2. List All Donations</h4>
+
+<pre><code>GET /overgivechain/donation/v1/donations</code></pre>
+
+<p>With pagination:</p>
+
+<pre><code>GET /overgivechain/donation/v1/donations?pagination.limit=10</code></pre>
+
+<h4>3. Query Donation by ID</h4>
+
+<pre><code>GET /overgivechain/donation/v1/donations/{id}</code></pre>
+
+<pre><code>http://localhost:1317/overgivechain/donation/v1/donations/0</code></pre>
+
+<h4>4. Query Donation by Hash</h4>
+
+<pre><code>GET /overgivechain/donation/v1/donations/hash/{donation_hash}</code></pre>
+
+<pre><code>http://localhost:1317/overgivechain/donation/v1/donations/hash/36c3e2478cd6c07c98c1ad8cc0644e75b882f30eefcb0b6e0a29fee4d8ab3f0c</code></pre>
+
 <hr>
 
 <h2>2.3 DELIVERY MODULE</h2>
@@ -360,6 +418,32 @@ pagination:
 <p>Retrieves a delivery using its unique delivery_hash.</p>
 
 <pre><code>overgive-chaind query delivery delivery-by-hash   --delivery-hash &lt;delivery_hash&gt;</code></pre>
+
+<h3>DELIVERY MODULE – Endpoints</h3>
+
+<p><strong>Base REST Path:</strong></p>
+
+<pre><code>/overgivechain/delivery/v1</code></pre>
+
+<h4>1. Query Module Parameters</h4>
+
+<pre><code>GET /overgivechain/delivery/v1/params</code></pre>
+
+<h4>2. List All Deliveries</h4>
+
+<pre><code>GET /overgivechain/delivery/v1/deliveries</code></pre>
+
+<p>With pagination:</p>
+
+<pre><code>GET /overgivechain/delivery/v1/deliveries?pagination.limit=10</code></pre>
+
+<h4>3. Query Delivery by ID</h4>
+
+<pre><code>GET /overgivechain/delivery/v1/deliveries/{id}</code></pre>
+
+<h4>4. Query Delivery by Hash</h4>
+
+<pre><code>GET /overgivechain/delivery/v1/deliveries/hash/{delivery_hash}</code></pre>
 
 </body>
 </html>
